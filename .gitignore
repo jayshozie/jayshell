@@ -1,0 +1,15 @@
+# Executables
+*.o
+*.out
+*.exe
+
+# Utilities
+cbench.sh
+utils.sh
+diff.txt
+log.txt
+stat.txt
+
+# Debug Artifacts
+*.d
+*.ilk

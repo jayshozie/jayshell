@@ -9,9 +9,7 @@
 # Utilities
 cbench.sh
 utils.sh
-diff.txt
-log.txt
-stat.txt
+utils/
 
 # Debug Artifacts
 *.d

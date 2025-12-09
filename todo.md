@@ -1,5 +1,9 @@
 # TODO
 
+## Features
+
+- [ ] `cd` `~` support
+
 ## README
 
 - [ ] Add build instructions
@@ -11,3 +15,5 @@
 # BUG FIXES
 
 # DONE
+
+- [x] v1.0

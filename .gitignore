@@ -2,6 +2,7 @@
 *.pdf
 
 # Executables
+jayshell
 *.o
 *.out
 *.exe

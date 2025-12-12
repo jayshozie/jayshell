@@ -1,7 +1,7 @@
 # 💻 jayshell - A Learner's Command-Line Shell in C
 
 `jayshell` is a simple command-line shell implemented in C, designed as a
-learning exercise. It supports basic command execution, piping, and
+learning exercise. It supports basic command execution, pipelining, and
 redirection.
 
 ## 🚀 Features
@@ -44,6 +44,15 @@ jaysh >
 ```
 
 ## ✅ Progress
+
+- [ ] **🚀 v3.0 - Complex Parsing:** Implementation of pipelining, multi-command
+execution, redirection, etc. will be the milestone of v3.0.
+
+- [ ] **🚀 v2.0 - Separation of Functionality:** Most of the functionality will
+be separated into their respective source files, which will be the milestone of
+v2.0.
+
+- [x] **📁 `cd -` Support:** You can use `cd -` to go back to the `OLD_PWD`.
 
 - [x] **📁 `cd ~/...` and `cd ~` Support:** Now, you can use `cd ~` and
 `cd ~/...` for changing directories.

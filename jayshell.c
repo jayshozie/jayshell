@@ -25,8 +25,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <time.h>
 #include <unistd.h>
 
-#define ARGS_SIZE 255
+#define ARGS_SIZE     255
+#define PATH_MAX_SIZE 4096 // standard
 char* command;
+char old_wd[PATH_MAX_SIZE];
+char curr_wd[PATH_MAX_SIZE];
 
 int main()
 {
@@ -70,21 +73,42 @@ int main()
                         /*
                          * Parse args[1] to check for tilde
                          */
-                        if((strncmp(args[1], "~", 1) == 0)) {
-                            char dirname_ext[ARGS_SIZE];
-                            printf("%s\n", args[1] + 1);
-                            snprintf(dirname_ext, ARGS_SIZE, "%s%s", home, args[1] + 1);
-                            printf("%s\n", dirname_ext);
-                            chdir(dirname_ext);
+                        if(strncmp(args[1], "~", 1) == 0) {
+                            char dirname_ext[PATH_MAX_SIZE];
+                            snprintf(dirname_ext, PATH_MAX_SIZE, "%s%s", home,
+                                     args[1] + 1);
+                            getcwd(old_wd, PATH_MAX_SIZE); // get old_wd
+                            if(chdir(dirname_ext) == 0) {
+                                setenv("OLDPWD", old_wd, 1);
+                            };
+                            getcwd(curr_wd, PATH_MAX_SIZE); // get curr_wd
+                            setenv("PWD", curr_wd, 1);
+                        }
+                        else if(strcmp(args[1], "-") == 0) {
+                            getcwd(old_wd, PATH_MAX_SIZE); // get old_wd
+                            if(chdir(getenv("OLDPWD")) == 0) {
+                                setenv("OLDPWD", old_wd, 1);
+                            };
+                            getcwd(curr_wd, PATH_MAX_SIZE); // get curr_wd
+                            setenv("PWD", curr_wd, 1);
                         }
                         else {
+                            getcwd(old_wd, PATH_MAX_SIZE); // get old_wd
                             dirname = args[1];
                             if(chdir(dirname) != 0) {
                                 /*
                                  * FIXME: For some reason, chdir returns -1 when
                                  * tilde is used
                                  */
-                                perror("ERR"); }
+                                perror("ERR");
+                            }
+                            else {
+                                if(chdir(getenv("OLDPWD")) == 0) {
+                                    setenv("OLDPWD", old_wd, 1);
+                                };
+                                getcwd(curr_wd, PATH_MAX_SIZE); // get curr_wd
+                                setenv("PWD", curr_wd, 1);
+                            }
                         }
                     }
                 }

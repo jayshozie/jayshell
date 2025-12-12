@@ -45,6 +45,9 @@ jaysh >
 
 ## ✅ Progress
 
+- [x] **📁 `cd ~/...` and `cd ~` Support:** Now, you can use `cd ~` and
+`cd ~/...` for changing directories.
+
 - [x] **🚀 v1.0:** The initial version of Jayshell is ready to use.
     - [x] Jayshell now supports command execution, and `exit` and `cd` commands.
 

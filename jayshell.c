@@ -26,12 +26,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <unistd.h>
 
 #define ARGS_SIZE 255
-char *command;
+char* command;
 
 int main()
 {
     /*
-     *                         M A I N   L O O P                                
+     *                         M A I N   L O O P
      */
     while(true) {
         /*
@@ -59,25 +59,36 @@ int main()
                 free(command);
                 exit(0);
             }
-            if(strcmp(args[0], "cd") == 0) {
+            else if(strcmp(args[0], "cd") == 0) {
+                const char* home;
                 char* dirname;
-                if((dirname = getenv("HOME")) == 0) {
-                    perror("ERR");
-                }
+                if((home = getenv("HOME")) == 0) { perror("ERR"); }
                 else {
-                    if(args[1] == NULL || args[1][0] == '\0') {
-                        chdir(dirname);
-                    }
-                    else if(args[2] != NULL) {
-                        printf("Too many arguments.\n");
-                    }
+                    if(args[1] == NULL || args[1][0] == '\0') { chdir(home); }
+
                     else {
-                        dirname = args[1];
-                        if(chdir(dirname) != 0) {
-                            perror("ERR");
+                        /*
+                         * Parse args[1] to check for tilde
+                         */
+                        if((strncmp(args[1], "~", 1) == 0)) {
+                            char dirname_ext[ARGS_SIZE];
+                            printf("%s\n", args[1] + 1);
+                            snprintf(dirname_ext, ARGS_SIZE, "%s%s", home, args[1] + 1);
+                            printf("%s\n", dirname_ext);
+                            chdir(dirname_ext);
+                        }
+                        else {
+                            dirname = args[1];
+                            if(chdir(dirname) != 0) {
+                                /*
+                                 * FIXME: For some reason, chdir returns -1 when
+                                 * tilde is used
+                                 */
+                                perror("ERR"); }
                         }
                     }
                 }
+                free(command);
             }
             else {
                 pid_t pid = fork();

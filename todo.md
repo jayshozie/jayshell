@@ -7,14 +7,35 @@
 
 ---
 
-# Roadmap for Jayshell
+# TODO
 
-## v3.0 - *Ritchie*
-
-*Focus:* I/O, Redirection, Environment
+## Bugs
 
 - [ ] **Environment Initialization Bug:** Fix the bug where variables aren't
 initialized on startup.
+
+- [ ] **`cd` can't follow symlinks**
+
+---
+
+# Roadmap for Jayshell
+
+## 🐞 v2.5 - *Hopper*
+
+*Focus:* Stability and Bug Squashing
+
+- [ ] **Environment Initialization:** Fix the bug where internal environment
+variables are uninitialized on startup.
+
+- [ ] **Symlink Support:** Rewrite `cd` and `pwd` logic to distinguish between
+logical paths and physical paths.
+
+- [ ] **Error Handling:** Implement more descriptive error messages for failed
+`chdir` calls.
+
+## 🔌 v3.0 - *Ritchie*
+
+*Focus:* I/O, Redirection, Environment
 
 - [ ] **Redirection Engine:** Implement <, >, >>, and 2> (stderr).
 
@@ -22,14 +43,18 @@ initialized on startup.
 
 - [ ] **Logical Execution:** Implement && (AND) and || (OR).
 
+- [ ] **Logical Path Tracking:** Ensure `cd` updates `PWD` with the user's input
+string, and `pwd` reads from `PWD` before falling back to `getcwd()`.
+    - **NOTE:** Add Check (If PWD doesn't exist or invalid, the shell should
+    always fall back to `getcwd`. This makes the shell self-healing.)
+
 - [ ] **Built-ins:**
     - [ ] `echo`: With -n and -e flag support.
     - [ ] `export`: To set environment variables.
     - [ ] `unset`: To remove variables.
     - [ ] `env`: To list current environment.
-    - [ ] `pwd`: (Already modularized, ensure it handles symlinks).
 
-## v4.0 - *Thompson*
+## 🕹️ v4.0 - *Thompson*
 
 *Focus:* Stability, Signal Handling, Job Control
 
@@ -44,7 +69,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `kill`: Send signals to processes by PID or Job ID.
     - [ ] `history`: Integrated with ~/.jayshell_history for persistence.
 
-## v5.0 - *Lovelace*
+## 📜 v5.0 - *Lovelace*
 
 *Focus:* Customization, Script Execution, Alias Logic
 
@@ -52,7 +77,9 @@ and SIGTSTP (Ctrl+Z).
 
 - [ ] **Startup Files:** Load .jayshellrc and .jayshell_aliases on init.
 
-- [ ] **Git Integration:** Dynamic prompt with status indicators.
+- [ ] **Dynamic Prompt:**
+    - [ ] *Git Integration:* Dynamic prompt with status indicators.
+    - [ ] *CWD in Prompt:* Shows current working directory in prompt.
 
 - [ ] **Built-ins:**
     - [ ] `source` / `.` : Execute scripts in the current shell context.
@@ -61,7 +88,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `read`: Take user input into a variable.
     - [ ] `wait`: Wait for background processes to complete.
 
-## v6.0 - *Chomsky*
+## 🧬 v6.0 - *Chomsky*
 
 *Focus:* Transitioning to a Formal Grammar with Flex & Bison.
 
@@ -77,7 +104,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `printf`: More robust output formatting.
     - [ ] `hash`: Command location caching for performance.
 
-## v7.0 - *Turing*
+## 🧠 v7.0 - *Turing*
 
 *Focus:* Turing Completeness and Data Types.
 
@@ -96,7 +123,42 @@ and SIGTSTP (Ctrl+Z).
 
 ---
 
-# DONE
+# Done
 
-- [x] **v2.0:** Modular architecture, `makefile`
-- [x] **v1.0:** Basic loop, fork/exec, `exit`, `cd`, `cd -`, `cd ~`
+## 🥚 v1.0 - *Neumann*
+
+*Focus:* The Foundation
+
+- [x] **Core Execution Loop:** Basic REPL
+
+- [x] **Basic Parsing:** Command tokenization via `strtok`
+
+- [x] **Basic Process Management:** Implementation of `fork` and `execvp`
+
+- [x] **Initial Built-ins:**
+    - [x] *Basic `cd`*
+    - [x] *`exit`*
+
+## 🐣 v1.5 - *Neumann+*
+
+*Focus:* POSIX Compliance
+
+- [x] **Tilde Expansion:** Support for `cd ~` to cd into `$HOME` directory
+
+- [x] **Home Shortcut:** Support for `cd` to cd into `$HOME` directory
+
+- [x] **Previous Directory:** Support for `cd -` using `$OLDPWD` logic
+
+- [x] **Environment Tracking:** Initial tracking of `PWD` and `OLDPWD`
+
+## 🏺 v2.0 - *Babbage*
+
+*Focus:* Separation of Functionality, Makefile
+
+- [x] **Modular Structure:**
+    - [x] `src/`
+    - [x] `include/`
+    - [x] `builtins/`
+
+- [x] `makefile`
+

@@ -6,12 +6,34 @@ redirection.
 
 ## 🚀 Features
 
-- Execute simple commands with arguments
-- Support for input/output redirection (`>`, `<`, `>>`)
-- Support for command piping (`|`)
-- Built-in commands like `cd`, `exit`, and `help`
-- Error handling for invalid commands and syntax
-- Signal handling for `Ctrl+C` and `Ctrl+Z`
+* Modular File Structure for Easier Expansion
+* `exit` (with exit codes)
+* `cd` (including `cd - `)
+* `pwd`
+* `~` Expansion
+
+## 🛠️ Requirements
+
+As **jayshell** evolves through its pioneer milestones, the dependencies and
+requirements will scale accordingly.
+
+### 🏗️ Core Requirements (v1.0 - v5.0)
+
+* **💻 Operating System:** POSIX-compliant OS (Linux, macOS, BSD)
+* **🔨 Compiler:** `gcc` or `clang` with support for the C11 standard
+* **📦 Build Tools:** `GNU Make`
+* **📚 Libraries:** `libreadline` for interactive command history and editing
+features
+
+### 🧬 Advanced Requirements (v6.0+)
+
+* **🔍 Lexer Generator:** `Flex` (Fast Lexical Analyzer)
+* **📐 Parser Generator:** `Bison` (GNU Parser Generator)
+
+### 🎨 Optional for UI/UX (v5.0+)
+
+* **🔡 [Nerd Font](https://www.nerdfonts.com/):** A **Nerd Font** is required to
+correctly display icons in the git integration and dynamic prompt.
 
 ## 📦 Installation
 
@@ -21,12 +43,15 @@ redirection.
 ~ $ cd jayshell
 ~/jayshell $
 ```
+
 - **Compiling the Jayshell:** There is a Makefile in the root of the repository.
 You should be able to just call `make release` in the root of the repository.
 ```bash
 ~/jayshell $ make release
-# Don't forget to run make clean when you'll rebuild.
 ```
+> [!IMPORTANT]
+> Don't forget to run `make clean` before a rebuild.
+
 - **Running Jayshell:** After that, you can run jayshell within that repo's root
 with;
 ```bash
@@ -57,20 +82,36 @@ $ pwd
 
 ## ✅ Progress
 
-- [ ] **🚀 v3.0 - Complex Parsing:** Implementation of pipelining, multi-command
-execution, redirection, etc. will be the milestone of v3.0.
+- [x] **🥚 v1.0 - *Neumann*:** The initial implementation of Jayshell. It has an
+loop, uses `strtok` for parsing, has basic support for external commands using
+`fork` and `execvp`. It has 2 builtins: `cd` and `exit`. `cd` defaults to home
+when no other argument is given.
+    - [x] **🐣 v1.5 - *Neumann+*:** Added `cd -` and `cd ~` path expansions.
 
-- [x] **🚀 v2.0 - Separation of Functionality:** Most of the functionality will
-be separated into their respective source files, which will be the milestone of
-v2.0.
+- [x] **🏺 v2.0 - *Babbage*:** Complete refactor into modular directories
+`src/`, `builtins/`, and `include/`.
 
-- [x] **📁 `cd -` Support:** You can use `cd -` to go back to the `OLD_PWD`.
+- [ ] **🐞 v2.5 - *Hopper*:** Fixing the environment initialization bug; rewrite
+`cd` and `pwd` symlink logic to distinguish between logical paths and physical
+paths; and error handling (needed more descriptive error messages)
 
-- [x] **📁 `cd ~/...` and `cd ~` Support:** Now, you can use `cd ~` and
-`cd ~/...` for changing directories.
+- [ ] **🔌 v3.0 - *Ritchie*:** Redirection, pipelining, logical execution,
+logical path tracking, and new built-ins (`echo`, `export`, `unset`, `env`)
 
-- [x] **🚀 v1.0:** The initial version of Jayshell is ready to use.
-    - [x] Jayshell now supports command execution, and `exit` and `cd` commands.
+- [ ] **🕹️ v4.0 - *Thompson*:** Signal handling (`SIGINT`, `SIGTSTP`,
+`SIGQUIT`), and job control (`jobs`, `&`, `fg`, `bg`, `kill`, `history`)
+
+- [ ] **📜 v5.0 - *Lovelace*:** Startup files (`.jayshellrc`,
+`.jayshell_aliasias`), shebang support, dynamic prompt (git status indicator,
+and cwd), and new built-ins (`source`, `alias` / `unalias`, `type`, `read`,
+`wait`)
+
+- [ ] **🧬 v6.0 - *Chomsky*:** Lexer/Parser rewrite using Bison/Flex, expansion
+engine (quote handling `'`, `"`; escape characters `\`; command substitution
+`$(command)`; globbing `*`, `?`), and new built-ins (`printf`, `hash`)
+
+- [ ] **🧠 v7.0 - *Turing*:** Control flow (conditionals, logic, loops), data
+types (`int`, `float`, `double`), and arithmetic operations
 
 ## 📝 References
 

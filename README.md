@@ -21,26 +21,38 @@ redirection.
 ~ $ cd jayshell
 ~/jayshell $
 ```
-- **Compiling the Jayshell:** Then, you need to use your favorite compiler and
-compile the `jayshell.c` source code.
+- **Compiling the Jayshell:** There is a Makefile in the root of the repository.
+You should be able to just call `make release` in the root of the repository.
 ```bash
-~/jayshell $ gcc ./jayshell.c -o jayshell -lreadline
+~/jayshell $ make release
+# Don't forget to run make clean when you'll rebuild.
 ```
 - **Running Jayshell:** After that, you can run jayshell within that repo's root
 with;
 ```bash
 ~/jayshell $ ./jayshell
-jaysh > whoami
-jaysh # yes i named the shell after my nickname, which was not a good idea
-jaysh > ls -lAh
-drwxrwxr-x 8 jaysh jaysh 4.0K Dec 12 11:40 .git
+$ whoami
+jaysh
+$ ls -lAh
+drwxrwxr-x 2 jaysh jaysh 4.0K Dec 22 17:54 builtins
+drwxrwxr-x 8 jaysh jaysh 4.0K Dec 22 18:08 .git
 -rw-rw-r-- 1 jaysh jaysh  130 Dec  9 13:34 .gitignore
--rwxrwxr-x 1 jaysh jaysh  19K Dec  9 19:42 jayshell
--rw-rw-r-- 1 jaysh jaysh 2.3K Dec 12 11:40 jayshell.c
--rw-rw-r-- 1 jaysh jaysh 1.2K Dec 12 11:45 README.md
--rw-rw-r-- 1 jaysh jaysh  190 Dec  9 19:44 todo.md
+drwxrwxr-x 2 jaysh jaysh 4.0K Dec 22 18:01 include
+-rwxrwxr-x 1 jaysh jaysh  26K Dec 22 18:01 jayshell
+-rw-rw-r-- 1 jaysh jaysh  35K Dec 12 11:53 LICENSE
+-rw-rw-r-- 1 jaysh jaysh  946 Dec 22 17:29 makefile
+drwxrwxr-x 2 jaysh jaysh 4.0K Dec 22 18:01 obj
+-rw-rw-r-- 1 jaysh jaysh 2.6K Dec 22 18:08 README.md
+drwxrwxr-x 2 jaysh jaysh 4.0K Dec 22 17:51 src
+-rw-rw-r-- 1 jaysh jaysh  471 Dec 22 18:03 todo.md
 # well without the GitHub's coloring of course.
-jaysh >
+$ cd builtins/
+$ pwd
+/home/jaysh/projects/c-mastery-projects/jayshell/builtins
+$ cd -
+$ pwd
+/home/jaysh/projects/c-mastery-projects/jayshell
+...
 ```
 
 ## ✅ Progress
@@ -48,7 +60,7 @@ jaysh >
 - [ ] **🚀 v3.0 - Complex Parsing:** Implementation of pipelining, multi-command
 execution, redirection, etc. will be the milestone of v3.0.
 
-- [ ] **🚀 v2.0 - Separation of Functionality:** Most of the functionality will
+- [x] **🚀 v2.0 - Separation of Functionality:** Most of the functionality will
 be separated into their respective source files, which will be the milestone of
 v2.0.
 

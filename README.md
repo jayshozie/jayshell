@@ -22,8 +22,8 @@ requirements will scale accordingly.
 * **💻 Operating System:** POSIX-compliant OS (Linux, macOS, BSD)
 * **🔨 Compiler:** `gcc` or `clang` with support for the C11 standard
 * **📦 Build Tools:** `GNU Make`
-* **📚 Libraries:** `libreadline` for interactive command history and editing
-features
+* **📚 Libraries:** `libreadline` for the shell prompt, interactive command
+history and editing features
 
 ### 🧬 Advanced Requirements (v6.0+)
 
@@ -90,10 +90,10 @@ when no other argument is given.
 
 - [x] **🏺 v2.0 - *Babbage*:** Complete refactor into modular directories
 `src/`, `builtins/`, and `include/`.
-
-- [ ] **🐞 v2.5 - *Hopper*:** Fixing the environment initialization bug; rewrite
-`cd` and `pwd` symlink logic to distinguish between logical paths and physical
-paths; and error handling (needed more descriptive error messages)
+    - [ ] **🐞 v2.5 - *Hopper*:** Fixing the environment initialization bug;
+    rewrite `cd` and `pwd` symlink logic to distinguish between logical paths
+    and physical paths; and error handling (needed more descriptive error
+    messages)
 
 - [ ] **🔌 v3.0 - *Ritchie*:** Redirection, pipelining, logical execution,
 logical path tracking, and new built-ins (`echo`, `export`, `unset`, `env`)

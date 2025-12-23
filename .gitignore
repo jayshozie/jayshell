@@ -7,6 +7,9 @@ jayshell
 *.out
 *.exe
 
+# Docker
+Dockerfile.*
+
 # Utilities
 cbench.sh
 utils.sh

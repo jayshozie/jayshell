@@ -1,8 +1,8 @@
-# 💻 jayshell - A Learner's Command-Line Shell in C
+# 💻 jayshell
 
 `jayshell` is a simple command-line shell implemented in C, designed as a
-learning exercise. It supports basic command execution, pipelining, and
-redirection.
+learning exercise for myself. It only supports basic command execution and a few
+built-ins, for now ;).
 
 ## 🚀 Features
 
@@ -14,13 +14,13 @@ redirection.
 
 ## 🛠️ Requirements
 
-As **jayshell** evolves through its pioneer milestones, the dependencies and
-requirements will scale accordingly.
+As **jayshell** evolves through its milestones named after Computer Science
+pioneers, the dependencies and requirements will scale accordingly.
 
 ### 🏗️ Core Requirements (v1.0 - v5.0)
 
 * **💻 Operating System:** POSIX-compliant OS (Linux, macOS, BSD)
-* **🔨 Compiler:** `gcc` or `clang` with support for the C11 standard
+* **🔨 Compiler:** `gcc` with support for the C11 standard (`clang` supt. soon)
 * **📦 Build Tools:** `GNU Make`
 * **📚 Libraries:** `libreadline` for the shell prompt, interactive command
 history and editing features
@@ -39,18 +39,20 @@ correctly display icons in the git integration and dynamic prompt.
 
 - **Cloning the Repository**: First, clone the repository to your machine.
 ```bash
-~ $ git clone https://github.com/jayshozie/jayshell.git
+~ $ git clone git@github.com:jayshozie/jayshell.git
 ~ $ cd jayshell
 ~/jayshell $
 ```
 
-- **Compiling the Jayshell:** There is a Makefile in the root of the repository.
+- **Compiling the Jayshell:** There is a Makefile at the root of the repository.
 You should be able to just call `make release` in the root of the repository.
 ```bash
 ~/jayshell $ make release
 ```
 > [!IMPORTANT]
 > Don't forget to run `make clean` before a rebuild.
+> [!NOTE]
+> You can use `make debug` to compile jayshell with the debugging flags.
 
 - **Running Jayshell:** After that, you can run jayshell within that repo's root
 with;
@@ -73,10 +75,10 @@ drwxrwxr-x 2 jaysh jaysh 4.0K Dec 22 17:51 src
 # well without the GitHub's coloring of course.
 $ cd builtins/
 $ pwd
-/home/jaysh/projects/c-mastery-projects/jayshell/builtins
+/home/my_user/jayshell/builtins
 $ cd -
 $ pwd
-/home/jaysh/projects/c-mastery-projects/jayshell
+/home/my_user/jayshell
 ...
 ```
 
@@ -89,7 +91,8 @@ when no other argument is given.
     - [x] **🐣 v1.5 - *Neumann+*:** Added `cd -` and `cd ~` path expansions.
 
 - [x] **🏺 v2.0 - *Babbage*:** Complete refactor into modular directories
-`src/`, `builtins/`, and `include/`.
+`src/`, `builtins/`, and `include/`, with the parser and tilde expander
+separated from the built-in `cd` command.
     - [ ] **🐞 v2.5 - *Hopper*:** Fixing the environment initialization bug;
     rewrite `cd` and `pwd` symlink logic to distinguish between logical paths
     and physical paths; and error handling (needed more descriptive error

@@ -15,13 +15,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 #include <stdio.h>
-#include <readline/readline.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <readline/readline.h>
+#include "shell_defs.h"
 #include "builtins.h"
 #include "execute.h"
 #include "parser.h"
-#include "shell_defs.h"
 
 int i = 0;
 int status;
@@ -37,12 +37,12 @@ int main()
          *  a. ADD TO HISTORY
          * 2. TOKENIZE ✔️
          * 3. FREE `command` ✔️
-         * 4. REQUEST BUILT-IN FUNCTION POINTER
-         *  a. IF NULL, CALL EXEC_EXTERNAL WITH ARGS
-         *  b. IF NOT, CALL THE RETURNED FUNCTION POINTER
-         * 5. CHECK STATUS
-         *  a. IF FAIL CALL PERROR OR SIMILAR
-         *  b. IF NOT DO NOTHING
+         * 4. REQUEST BUILT-IN FUNCTION POINTER ✔️
+         *  a. IF NULL, CALL EXEC_EXTERNAL WITH ARGS ✔️
+         *  b. IF NOT, CALL THE RETURNED FUNCTION POINTER ✔️
+         * 5. CHECK STATUS ✔️
+         *  a. IF FAIL CALL PERROR OR SIMILAR ✔️
+         *  b. IF NOT DO NOTHING ✔️
          * 6. GOTO 1:
          */
 

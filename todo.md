@@ -88,7 +88,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `read`: Take user input into a variable.
     - [ ] `wait`: Wait for background processes to complete.
 
-## 🧬 v6.0 - *Chomsky*
+## 🧬 v6.0 - *Backus*
 
 *Focus:* Transitioning to a Formal Grammar with Flex & Bison.
 

@@ -109,7 +109,7 @@ logical path tracking, and new built-ins (`echo`, `export`, `unset`, `env`)
 and cwd), and new built-ins (`source`, `alias` / `unalias`, `type`, `read`,
 `wait`)
 
-- [ ] **🧬 v6.0 - *Chomsky*:** Lexer/Parser rewrite using Bison/Flex, expansion
+- [ ] **🧬 v6.0 - *Backus*:** Lexer/Parser rewrite using Bison/Flex, expansion
 engine (quote handling `'`, `"`; escape characters `\`; command substitution
 `$(command)`; globbing `*`, `?`), and new built-ins (`printf`, `hash`)
 

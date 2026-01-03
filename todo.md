@@ -2,7 +2,7 @@
 
 * The monolithic `jayshell.c` has been successfully split into `src/`,
 `builtins/`, and `include/`.
-* Modular build system via `makefile` is implemented.
+* Modular build system via `Makefile` is implemented.
 * `cd -` and `cd ~` fully functional.
 
 ---

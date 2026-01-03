@@ -24,7 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include "execute.h"
 
 int exec_external(char** args) {
-    int status;
+    int status = 0;
     pid_t pid = fork();
     if(pid == 0) {
         if((status = execvp(args[0], args)) == -1) {

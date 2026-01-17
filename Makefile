@@ -19,9 +19,6 @@ OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 DEPS = $(OBJS:.o=.d)
 vpath %.c src builtins
 
-# default make is debug
-all: debug
-
 debug: CFLAGS += -g
 debug: jayshell
 
@@ -35,6 +32,18 @@ clean:
 	rm -f jayshell
 	rm -rf $(OBJDIR)
 
+GREEN  := $(shell tput -Txterm setaf 2)
+RESET  := $(shell tput -Txterm sgr0)
+
+help:
+	@echo ''
+	@echo 'Usage:'
+	@echo '  ${GREEN}make release${RESET}   Build the base Docker image'
+	@echo '  ${GREEN}make debug${RESET}     Run the container with your local dotfiles mounted'
+	@echo '  ${GREEN}make clean${RESET}     Remove the Docker image'
+	@echo '  ${GREEN}make help${RESET}      Remove the Docker image'
+	@echo ''
+
 jayshell : $(OBJS)
 	$(CC) $(CFLAGS) -o jayshell $(OBJS) $(LIBS)
 
@@ -43,6 +52,6 @@ obj/%.o : %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # cli options
-.PHONY: all release debug clean
+.PHONY: release debug clean help
 
 -include $(DEPS)

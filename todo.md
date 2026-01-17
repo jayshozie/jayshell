@@ -14,8 +14,6 @@
 - [ ] **Environment Initialization Bug:** Fix the bug where variables aren't
 initialized on startup.
 
-- [ ] **`cd` can't follow symlinks**
-
 ---
 
 # Roadmap for Jayshell
@@ -125,6 +123,10 @@ and SIGTSTP (Ctrl+Z).
 
 # Done
 
+## TODOs
+
+- [x] **`cd` can't follow symlinks**
+
 ## 🥚 v1.0 - *Neumann*
 
 *Focus:* The Foundation
@@ -161,4 +163,3 @@ and SIGTSTP (Ctrl+Z).
     - [x] `builtins/`
 
 - [x] `makefile`
-

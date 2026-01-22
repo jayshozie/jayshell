@@ -15,20 +15,30 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 #include <unistd.h>
+#include <stdbool.h>
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "shell_defs.h"
 #include "shell_state.h"
 
 /* GLOBAL VARIABLES */
 char shell_cwd[PATH_MAX_SIZE];
 char shell_oldpwd[PATH_MAX_SIZE];
+const char* usr_home;
+bool is_valid_oldpwd;
 
 /* Initialization function */
 void init_shell_state(void) {
+    is_valid_oldpwd = false;
+
+    if((usr_home = getenv("HOME")) == NULL) {
+        perror("[ERROR] HOME not set.");
+    }
+
     if(getcwd(shell_cwd, sizeof(shell_cwd)) == NULL) {
-        perror("[ERROR] Critical Error: Cannot get CWD.");
+        perror("[ERROR] Critical Error: Cannot get 'CWD'.");
         exit(1);
     }
 
@@ -42,7 +52,7 @@ void init_shell_state(void) {
 
 /* Helper to update state safely */
 /* Run after chdir */
-int update_cwd(char* new_path) {
+int update_cwd(void) {
     int status = 0;
     /* 
      * 1. copy shell_cwd -> shell_oldpwd
@@ -52,19 +62,20 @@ int update_cwd(char* new_path) {
      *      export PWD using shell_cwd
      * 4. return success/failure
      */
-    strcpy(shell_cwd, shell_oldpwd);
+    strcpy(shell_oldpwd, shell_cwd);
     if(getcwd(shell_cwd, PATH_MAX_SIZE) == NULL) {
         status = errno;
         perror("[ERROR] Couldn't get cwd.");
     }
-    if(setenv("OLDPWD", shell_oldpwd) != 0) {
+    if(setenv("OLDPWD", shell_oldpwd, 1) != 0) {
         status = errno;
         perror("[ERROR] Couldn't set environment variable 'OLDPWD'.");
     }
-    if(setenv("PWD", shell_cwd) != 0) {
+    if(setenv("PWD", shell_cwd, 1) != 0) {
         status = errno;
         perror("[ERROR] Couldn't set environment variable 'PWD'.");
     }
+    is_valid_oldpwd = true;
 
     return status;
 }

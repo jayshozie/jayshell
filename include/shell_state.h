@@ -17,14 +17,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #ifndef _SHELL_STATE_H_
 # define _SHELL_STATE_H_
 
+#include "shell_defs.h"
+
 /* GLOBAL VARIABLES */
-extern char shell_cwd[PATH_MAX];
-extern char shell_oldpwd[PATH_MAX];
+extern char shell_cwd[PATH_MAX_SIZE];
+extern char shell_oldpwd[PATH_MAX_SIZE];
+extern const char* usr_home;
+extern bool is_valid_oldpwd;
 
 /* Initialization function */
 void init_shell_state(void);
 
 /* Helper to update state safely */
-int update_cwd(char* new_path);
+int update_cwd(void);
 
 #endif /* _SHELL_STATE_H_ */

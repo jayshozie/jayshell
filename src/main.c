@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <stdlib.h>
 #include <readline/readline.h>
 #include "shell_defs.h"
+#include "shell_state.h"
 #include "builtins.h"
 #include "execute.h"
 #include "parser.h"

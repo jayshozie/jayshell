@@ -20,14 +20,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include "shell_state.h"
 #include "builtins.h"
 
 int builtin_cd(char** args) {
     int status = 0;
-    const char* home;
     char* dirname;
-    char old_wd[PATH_MAX_SIZE];
-    char curr_wd[PATH_MAX_SIZE];
 
     if(args[2] != NULL) {
         /* Too many arguments error implemented. */
@@ -35,41 +33,41 @@ int builtin_cd(char** args) {
         perror("Too many arguments.");
     }
     else {
-        if((home = getenv("HOME")) == 0) {
-            /* HOME env not set error implemented. */
-            status = errno;
-            perror("ERR:");
-        }
-        else {
-            if(args[1] == NULL || args[1][0] == '\0') {
-                /* empty args[1] implemented, POSIX compliance */
-                if(chdir(home) != 0) {
-                    status = errno;
-                    perror("ERR");
-                }
-            }
-            else if(strcmp(args[1], "-") == 0) {
-                /* cd - implemented, POSIX compliance */
-                getcwd(old_wd, PATH_MAX_SIZE);
-                if(chdir(getenv("OLDPWD")) == 0) {
-                    setenv("OLDPWD", old_wd, 1);
-                }
-                printf("%s\n", curr_wd);
-                getcwd(curr_wd, PATH_MAX_SIZE);
-                setenv("PWD", curr_wd, 1);
+        if(args[1] == NULL || args[1][0] == '\0') {
+            /* empty args[1] implemented, POSIX compliance */
+            if(chdir(getenv("HOME")) != 0) {
+                status = errno;
+                perror("ERR");
             }
             else {
-                getcwd(old_wd, PATH_MAX_SIZE);
-                dirname = args[1];
-                if(chdir(dirname) != 0){
+                update_cwd();
+            }
+        }
+        else if(strcmp(args[1], "-") == 0) {
+            if(is_valid_oldpwd != true) {
+                status = 1;
+                printf("[ERROR] OLD_PWD not set yet.\n");
+            }
+            else {
+                /* cd - implemented, POSIX compliance */
+                if(chdir(getenv("OLDPWD")) != 0) {
                     status = errno;
-                    perror("ERR");
+                    perror("[ERROR] Failed while changing 'PWD' to 'OLDPWD'.");
                 }
                 else {
-                    setenv("OLDPWD", old_wd, 1);
-                    getcwd(curr_wd, PATH_MAX_SIZE);
-                    setenv("PWD", curr_wd, 1);
+                    update_cwd();
+                    printf("%s\n", getenv("PWD"));
                 }
+            }
+        }
+        else {
+            dirname = args[1];
+            if(chdir(dirname) != 0) {
+                status = errno;
+                perror("ERR");
+            }
+            else {
+                update_cwd();
             }
         }
     }

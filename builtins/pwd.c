@@ -16,14 +16,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 #include <stdio.h>
 #include <errno.h>
-#include <unistd.h>
+#include <stdlib.h>
 #include "builtins.h"
 #include "shell_defs.h"
+#include "shell_state.h"
 
 int builtin_pwd(char** args) {
     int status = 0;
-    char cwd[PATH_MAX_SIZE];
-    if(getcwd(cwd, PATH_MAX_SIZE) == NULL) {
+    const char* cwd;
+    if((cwd = getenv("PWD")) == NULL) {
         status = errno;
         perror("ERR");
     }

@@ -11,9 +11,6 @@
 
 ## Bugs
 
-- [ ] **Environment Initialization Bug:** Fix the bug where variables aren't
-initialized on startup.
-
 ---
 
 # Roadmap for Jayshell
@@ -22,14 +19,14 @@ initialized on startup.
 
 *Focus:* Stability and Bug Squashing
 
-- [ ] **Environment Initialization:** Fix the bug where internal environment
-variables are uninitialized on startup.
-
-- [ ] **Symlink Support:** Rewrite `cd` and `pwd` logic to distinguish between
-logical paths and physical paths.
-
 - [ ] **Error Handling:** Implement more descriptive error messages for failed
 `chdir` calls.
+
+- [x] **Environment Initialization:** Fix the bug where internal environment
+variables are uninitialized on startup.
+
+- [x] **Symlink Support:** Rewrite `cd` and `pwd` logic to distinguish between
+logical paths and physical paths.
 
 ## 🔌 v3.0 - *Ritchie*
 
@@ -126,6 +123,9 @@ and SIGTSTP (Ctrl+Z).
 ## TODOs
 
 - [x] **`cd` can't follow symlinks**
+
+- [x] **Environment Initialization Bug:** Fix the bug where variables aren't
+initialized on startup.
 
 ## 🥚 v1.0 - *Neumann*
 

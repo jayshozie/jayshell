@@ -31,6 +31,9 @@ builtin_func run_builtin;
 
 int main()
 {
+    /* initialize shell env vars */
+    init_shell_state();
+
     while(true) {
         /*
          * 1. GET COMMAND ✔️

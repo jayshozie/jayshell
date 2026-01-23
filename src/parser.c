@@ -85,7 +85,7 @@ char** tokenize(char* line) {
      * Add a single NULL at the end of the array, because exec's require the
      * last element in the array to be a NULL
      */
-    args = realloc(args, (tokens_written + 1)* sizeof(char*));
+    args = realloc(args, (tokens_written + 1) * sizeof(char*));
     args[tokens_written] = NULL;
 
     return args;

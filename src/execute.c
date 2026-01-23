@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "builtins.h"
@@ -27,8 +28,9 @@ int exec_external(char** args) {
     int status = 0;
     pid_t pid = fork();
     if(pid == 0) {
-        if((status = execvp(args[0], args)) == -1) {
-            perror("ERR");
+        if(execvp(args[0], args) == -1) {
+            status = errno;
+            printf("[ERROR] errno: %d\n", status);
             exit(status);
         }
     }

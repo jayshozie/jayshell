@@ -31,19 +31,21 @@ bool is_valid_oldpwd;
 
 /* Initialization function */
 void init_shell_state(void) {
+    int status = 0;
     is_valid_oldpwd = false;
 
     if((usr_home = getenv("HOME")) == NULL) {
-        perror("[ERROR] HOME not set.");
+        printf("[ERROR] HOME not set.");
     }
 
     if(getcwd(shell_cwd, sizeof(shell_cwd)) == NULL) {
-        perror("[ERROR] Critical Error: Cannot get 'CWD'.");
+        printf("[ERROR] Critical error. CWD is not set.");
         exit(1);
     }
 
     if(setenv("PWD", shell_cwd, 1) != 0) {
-        perror("[ERROR] Couldn't set environment variable 'PWD'.");
+        status = errno;
+        printf("[ERROR] Couldn't set environment variable 'PWD'. errno: %d", status);
     }
 
     unsetenv("OLDPWD"); /* explicitly unset OLDPWD on startup */
@@ -65,32 +67,17 @@ int update_cwd(void) {
     strcpy(shell_oldpwd, shell_cwd);
     if(getcwd(shell_cwd, PATH_MAX_SIZE) == NULL) {
         status = errno;
-        perror("[ERROR] Couldn't get cwd.");
+        printf("[ERROR] Couldn't get cwd. errno: %d\n", status);
     }
     if(setenv("OLDPWD", shell_oldpwd, 1) != 0) {
         status = errno;
-        perror("[ERROR] Couldn't set environment variable 'OLDPWD'.");
+        printf("[ERROR] Couldn't set environment variable 'OLDPWD'. errno: %d\n", status);
     }
     if(setenv("PWD", shell_cwd, 1) != 0) {
         status = errno;
-        perror("[ERROR] Couldn't set environment variable 'PWD'.");
+        printf("[ERROR] Couldn't set environment variable 'PWD'. errno: %d\n", status);
     }
     is_valid_oldpwd = true;
 
     return status;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

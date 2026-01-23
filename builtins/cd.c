@@ -27,20 +27,21 @@ int builtin_cd(char** args) {
     int status = 0;
     char* dirname;
 
-    if(args[2] != NULL) {
+    if(args[1] != NULL && args[2] != NULL) {
         /* Too many arguments error implemented. */
-        status = errno;
-        perror("Too many arguments.");
+        printf("[ERROR] Too many arguments.\n");
     }
     else {
         if(args[1] == NULL || args[1][0] == '\0') {
             /* empty args[1] implemented, POSIX compliance */
             if(chdir(getenv("HOME")) != 0) {
                 status = errno;
-                perror("ERR");
+                printf("[ERROR] errno: %d\n", status);
             }
             else {
-                update_cwd();
+                if((status = update_cwd()) != 0) {
+                    printf("[ERROR] update_cwd had an error. errno: %d\n", status);
+                }
             }
         }
         else if(strcmp(args[1], "-") == 0) {
@@ -52,10 +53,12 @@ int builtin_cd(char** args) {
                 /* cd - implemented, POSIX compliance */
                 if(chdir(getenv("OLDPWD")) != 0) {
                     status = errno;
-                    perror("[ERROR] Failed while changing 'PWD' to 'OLDPWD'.");
+                    printf("[ERROR] Failed while changing 'PWD' to 'OLDPWD'. errno: %d\n", status);
                 }
                 else {
-                    update_cwd();
+                    if((status = update_cwd()) != 0) {
+                        printf("[ERROR] update_cwd had an error. errno: %d\n", status);
+                    }
                     printf("%s\n", getenv("PWD"));
                 }
             }
@@ -64,10 +67,12 @@ int builtin_cd(char** args) {
             dirname = args[1];
             if(chdir(dirname) != 0) {
                 status = errno;
-                perror("ERR");
+                printf("[ERROR] Couldn't change directory. errno: %d\n", status);
             }
             else {
-                update_cwd();
+                if((status = update_cwd()) != 0) {
+                    printf("[ERROR] update_cwd had an error. errno: %d\n", status);
+                }
             }
         }
     }

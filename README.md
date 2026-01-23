@@ -93,7 +93,7 @@ when no other argument is given.
 - [x] **🏺 v2.0 - *Babbage*:** Complete refactor into modular directories
 `src/`, `builtins/`, and `include/`, with the parser and tilde expander
 separated from the built-in `cd` command.
-    - [ ] **🐞 v2.5 - *Hopper*:** Fixing the environment initialization bug;
+    - [x] **🐞 v2.5 - *Hopper*:** Fixing the environment initialization bug;
     rewrite `cd` and `pwd` symlink logic to distinguish between logical paths
     and physical paths; and error handling (needed more descriptive error
     messages)

@@ -26,7 +26,7 @@ int builtin_pwd(char** args) {
     const char* cwd;
     if((cwd = getenv("PWD")) == NULL) {
         status = errno;
-        perror("ERR");
+        printf("[ERROR] Coludn't get environment variable 'PWD'. errno: %d", status);
     }
     printf("%s\n", cwd);
     return status;

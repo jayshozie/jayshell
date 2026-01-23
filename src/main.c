@@ -25,7 +25,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include "parser.h"
 
 int i = 0;
-int status;
+int status = 0;
 char* command;
 char** args; /* DYNAMICALLY ALLOCATED BY THE TOKENIZER */
 builtin_func run_builtin;

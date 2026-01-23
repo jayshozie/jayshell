@@ -15,19 +15,6 @@
 
 # Roadmap for Jayshell
 
-## 🐞 v2.5 - *Hopper*
-
-*Focus:* Stability and Bug Squashing
-
-- [ ] **Error Handling:** Implement more descriptive error messages for failed
-`chdir` calls.
-
-- [x] **Environment Initialization:** Fix the bug where internal environment
-variables are uninitialized on startup.
-
-- [x] **Symlink Support:** Rewrite `cd` and `pwd` logic to distinguish between
-logical paths and physical paths.
-
 ## 🔌 v3.0 - *Ritchie*
 
 *Focus:* I/O, Redirection, Environment
@@ -127,6 +114,11 @@ and SIGTSTP (Ctrl+Z).
 - [x] **Environment Initialization Bug:** Fix the bug where variables aren't
 initialized on startup.
 
+- [x] **`cd` Illegal `args[2]` Check:** Because of how the parser generates the
+tokens, directly checking `args[2]` is causing weird behavior. Added a check for
+`args[1]` to make sure if the command is simply `cd` and not `cd /path/to/dir`
+it doesn't accidentally check an unallocated space.
+
 ## 🥚 v1.0 - *Neumann*
 
 *Focus:* The Foundation
@@ -163,3 +155,16 @@ initialized on startup.
     - [x] `builtins/`
 
 - [x] `makefile`
+
+## 🐞 v2.5 - *Hopper*
+
+*Focus:* Stability and Bug Squashing
+
+- [x] **Error Handling:** Implement more descriptive error messages for failed
+`chdir` calls.
+
+- [x] **Environment Initialization:** Fix the bug where internal environment
+variables are uninitialized on startup.
+
+- [x] **Symlink Support:** Rewrite `cd` and `pwd` logic to distinguish between
+logical paths and physical paths.

@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <string.h>
 #include "builtins.h"
 
-static COMMAND builtins[] = {
+static BUILTIN builtins[] = {
     {"cd", &builtin_cd},
     {"exit", &builtin_exit},
     {"echo", &builtin_echo},
@@ -38,7 +38,7 @@ static COMMAND builtins[] = {
 /* returns true if cmd is a built-in command, false if not */
 builtin_func get_builtin(char* cmd) {
     int i = 0;
-    COMMAND* curr = &builtins[i];
+    BUILTIN* curr = &builtins[i];
 
     while(curr->cmd != NULL) {
         if(strcmp(cmd, curr->cmd) == 0) {

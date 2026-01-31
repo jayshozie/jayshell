@@ -26,7 +26,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
  * handle_quotes()
  * parse_redirection()
  * parse_pipeline()
- * tilde_expansion() or something similar that checks char by char
  */
 
 /*

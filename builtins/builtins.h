@@ -26,7 +26,7 @@ typedef struct {
     char* cmd;
     /* function pointer pointing to the function needed to run the command */
     builtin_func func;
-} COMMAND;
+} BUILTIN;
 
 /*
  * Defines the function get_builtin implemented in builtins/builtin.c

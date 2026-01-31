@@ -47,7 +47,7 @@ int main()
          * 5. CHECK STATUS ✔️
          *  a. IF FAIL CALL PERROR OR SIMILAR ✔️
          *  b. IF NOT DO NOTHING ✔️
-         * 6. GOTO 1:
+         * 6. GOTO 1
          */
 
         /* get prompt, if null readline failed */

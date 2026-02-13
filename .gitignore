@@ -1,11 +1,12 @@
 # Licensed Book
 *.pdf
 
-# Executables
+# Executables & Related Stuff
 jayshell
 *.o
 *.out
 *.exe
+*.hex
 
 # Docker
 Dockerfile.*

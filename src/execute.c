@@ -30,7 +30,9 @@ int exec_external(char** args) {
     if(pid == 0) {
         if(execvp(args[0], args) == -1) {
             status = errno;
-            printf("[ERROR] errno: %d\n", status);
+            if(status == ENOENT) { /* No such file or directory */
+                printf("[ERROR] Command '%s' not found. errno: %d\n", args[0], status);
+            }
             exit(status);
         }
     }

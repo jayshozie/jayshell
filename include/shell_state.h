@@ -15,14 +15,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 #ifndef _SHELL_STATE_H_
-# define _SHELL_STATE_H_
+#define _SHELL_STATE_H_
 
 #include "shell_defs.h"
+#include <stdbool.h>
 
 /* GLOBAL VARIABLES */
 extern char shell_cwd[PATH_MAX_SIZE];
 extern char shell_oldpwd[PATH_MAX_SIZE];
-extern const char* usr_home;
+extern const char *usr_home;
 extern bool is_valid_oldpwd;
 
 /* Initialization function */

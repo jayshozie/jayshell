@@ -14,20 +14,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include <stdio.h>
-#include <errno.h>
-#include <stdlib.h>
 #include "builtins.h"
 #include "shell_defs.h"
-#include "shell_state.h"
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int builtin_pwd(char** args) {
-    int status = 0;
-    const char* cwd;
-    if((cwd = getenv("PWD")) == NULL) {
-        status = errno;
-        printf("[ERROR] Couldn't get environment variable 'PWD'. errno: %d\n", status);
-    }
-    printf("%s\n", cwd);
-    return status;
+int builtin_pwd(CMD *cmd)
+{
+	int status = 0;
+	const char *cwd;
+	if ((cwd = getenv("PWD")) == NULL) {
+		status = errno;
+		fprintf(stderr,
+			"[ERROR] Couldn't get environment variable 'PWD'. errno: %d\n",
+			status);
+	}
+	printf("%s\n", cwd);
+	return status;
 }

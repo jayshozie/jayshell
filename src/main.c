@@ -14,29 +14,34 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include "shell_defs.h"
-#include "shell_state.h"
 #include "builtins.h"
 #include "execute.h"
 #include "parser.h"
+#include "shell_defs.h"
+#include "shell_state.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+/*
+ * Readline uses the type 'FILE', but doesn't include <stdio.h>, so we have to
+ * move it at after that, although the ordering is messed up that way.
+ */
+#include <readline/readline.h>
 
 int i = 0;
 int status = 0;
-char* command;
-char** args; /* DYNAMICALLY ALLOCATED BY THE TOKENIZER */
+char *command;
+char **tokens; /* DYNAMICALLY ALLOCATED BY THE TOKENIZER */
 builtin_func run_builtin;
 
 int main()
 {
-    /* initialize shell env vars */
-    init_shell_state();
+	/* initialize shell env vars */
+	init_shell_state();
 
-    while(true) {
-        /*
+	while (true) {
+		/*
          * 1. GET COMMAND ✔️
          *  a. ADD TO HISTORY
          * 2. TOKENIZE ✔️
@@ -50,40 +55,27 @@ int main()
          * 6. GOTO 1
          */
 
-        /* get prompt, if null readline failed */
-        if((command = readline("$ ")) != NULL) {
-            /* tokenize command, args is dynamically allocated */
-            args = tokenize(command);
-            /* readline uses heap to store the output, don't forget to free */
-            free(command);
+		/* get prompt, if null readline failed */
+		if ((command = readline("$ ")) != NULL) {
+			/* tokenize command, args is dynamically allocated */
+			tokens = lexer(command);
+			/* readline uses heap to store the output, don't forget to free */
+			free(command);
 
-            /* TEMPORARY: TILDE EXPANSION */
-            args = expand_tilde(args);
+			tokens = expand_tilde(tokens);
 
-            /* Request built-in function pointer */
-            run_builtin = get_builtin(args[0]);
+			CMD *head = parser(tokens);
 
-            if(run_builtin != NULL) {
-                status = run_builtin(args);
-            }
-            else {
-                status = exec_external(args);
-            }
+			if ((status = exec_cmds(head)) != 0) {
+				fprintf(stderr,
+					"[ERROR] Something went wrong. $? : %d\n",
+					status);
+			}
 
-            /*
-             * `args` and every single element of `args` is on heap. thus they
-             * must be individually free`d.
-             */
-            i = 0;
-            while(args[i] != NULL) {
-                free(args[i]);
-                i++;
-            }
-            free(args);
-        }
-        else {
-            free(command);
-            exit(1);
-        }
-    }
+			free_cmds(head);
+		} else {
+			free(command);
+			exit(1);
+		}
+	}
 }

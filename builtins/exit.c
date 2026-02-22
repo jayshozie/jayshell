@@ -14,16 +14,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include <limits.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
 #include "builtins.h"
+#include <limits.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
-int builtin_exit(char** args) {
-    unsigned long exit_val = 0;
-    if(args[1] != NULL) {
-        exit_val = strtoul(args[1], NULL, 0);
-    }
-    exit(exit_val);
+int builtin_exit(CMD *cmd)
+{
+	char **args = cmd->args;
+	unsigned long exit_val = 0;
+	if (args[1] != NULL) {
+		exit_val = strtoul(args[1], NULL, 0);
+	}
+	exit(exit_val);
 }

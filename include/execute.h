@@ -15,11 +15,31 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 #ifndef _EXECUTE_H_
-# define _EXECUTE_H_
+#define _EXECUTE_H_
+
+#include "builtins.h"
+#include "shell_defs.h"
+#include <sys/types.h>
 
 /*
- * Executes external command using fork and execvp.
+ * Sets the pipes and forks, then calls the appropriate functions.
  */
-extern int exec_external(char** args);
+extern int exec_cmds(CMD *head);
+
+/*
+ * Does plumbing work. Doesn't return.
+ */
+extern int plumber(CMD *curr, int fd_in, int fd_out);
+
+/*
+ *
+ */
+extern int __worker_builtin(builtin_func func, CMD *curr, int fd_in,
+			    int fd_out);
+
+/*
+ * Calls dup2 with the correct arguments
+ */
+extern pid_t __worker_extern(CMD *curr, int fd_in, int fd_out);
 
 #endif /* _EXECUTE_H_ */

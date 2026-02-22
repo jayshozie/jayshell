@@ -14,79 +14,261 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include "shell_defs.h"
 #include "parser.h"
+#include "shell_defs.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-char** expand_tilde(char** args) {
-    int i = 0;
-    char* remainder;
-    int dirsize;
-    char* home = getenv("HOME");
-    while(args[i] != NULL) {
-        if(args[i][0] == '~') {
-            /* /home/user + ~/dir/to/chdir - ~ */
-            dirsize = strlen(home) + strlen(args[i]);
-            remainder = malloc(dirsize);
-            snprintf(remainder, dirsize, "%s%s", home, args[i] + 1);
-            free(args[i]);
-            args[i] = remainder;
-        }
-        i++;
-    }
-    return args;
+/* remove when building */
+// typedef struct CMD CMD;
+
+char **expand_tilde(char **args)
+{
+	int i = 0;
+	char *remainder;
+	int dirsize;
+	char *home = getenv("HOME");
+	while (args[i] != NULL) {
+		if (args[i][0] == '~') {
+			/* /home/user + ~/dir/to/chdir - ~ */
+			dirsize = strlen(home) + strlen(args[i]);
+			remainder = malloc(dirsize);
+			snprintf(remainder, dirsize, "%s%s", home, args[i] + 1);
+			free(args[i]);
+			args[i] = remainder;
+		}
+		i++;
+	}
+	return args;
 }
 
 /*
- * Gets an array of characters, returns tokens.
+ * Gets the character array, returns tokens.
  */
-char** tokenize(char* line) {
-    char** args = malloc(ARGS_SIZE * sizeof(char*));
-    char* token;
-    unsigned long tokens_written = 0;
+char **lexer(char *line)
+{
+	char **tokens = malloc(ARGS_SIZE * sizeof(char *));
+	char buf[1024];
+	char c;
+	unsigned long buf_idx = 0;
+	unsigned long tok_idx = 0;
+	unsigned long lin_idx = 0;
 
-    /*
-     * get the first token, and check whether it's NULL. if it's NULL, command
-     * from main.c is empty, so initialize args[0] so we don't check an
-     * uninitialized value while free'ing args.
-     */
-    if((token = strtok(line, " ")) == NULL) {
-        /* if it's NULL, realloc args, and initialize args[0] */
-        args = realloc(args, sizeof(char*));
-        args[0] = NULL;
-        /* don't forget token is on the heap */
-        free(token);
-        /* return */
-        return args;
-    }
-    /* token is not NULL */
-    args[0] = malloc(strlen(token) + 1); /* sizeof(char) = 1 */
-    /* get the token in args */
-    strcpy(args[0], token);
-    tokens_written++;
+	while (line[lin_idx] != '\0') {
+		c = line[lin_idx];
+		/* whitespace */
+		if (c == ' ' || c == '\t') {
+			/* end of token, flush the buffer into the new token  */
+			if (buf_idx > 0) {
+				/* TODO
+                 * Find a way to get the buffer flusher out of these blocks.
+                 *
+                 * WHY?
+                 * Block repetition
+                 *
+                 * HOW?
+                 * Function maybe?
+                 */
+				buf[buf_idx] = '\0';
+				tokens[tok_idx] = strdup(buf);
+				tok_idx++;
+				buf_idx = 0;
+			}
+			lin_idx++;
+		}
+		/* special characters */
+		else if (c == '|' || c == '>' || c == '<' || c == ';') {
+			/* TODO
+             * There has to be a better way to check whether c is a special
+             * character. Not sure how this can be generalized and taken out of
+             * this specific line, but we have to find it.
+             *
+             * WHY?
+             * We'll have to check for the exact same characters in the parser
+             * too. So, code repetition.
+             *
+             * HOW?
+             * Separate function, maybe? An enum doesn't work, because we need a
+             * specific set of integers, not any integer. What we need is a
+             * Python/Bash style associative array, or a function that checks
+             * for the specific characters we're looking for.
+             */
+			if (buf_idx > 0) { /* flush buffer */
+				buf[buf_idx] = '\0';
+				tokens[tok_idx] = strdup(buf);
+				tok_idx++;
+				buf_idx = 0;
+			}
 
-    /* get the rest of the tokens */
-    while(tokens_written < ARGS_SIZE) {
-        /* if the token is not NULL, write it to args */
-        if((token = strtok(NULL, " ")) != NULL) {
-            /* sizeof(char) = 1 */
-            args[tokens_written] = malloc(strlen(token) + 1);
-            strcpy(args[tokens_written], token);
-            tokens_written++;
-        }
-        /* if it is NULL, we're at the end of our tokens, so break */
-        else { break; }
-    }
+			if (c == '>' &&
+			    line[lin_idx + 1] == '>') { /* append mode check */
+				tokens[tok_idx] = malloc(3);
+				strcpy(tokens[tok_idx], ">>");
+				tok_idx++;
+				lin_idx +=
+					2; /* skip the next character in line */
+			} else {
+				tokens[tok_idx] = malloc(2);
+				tokens[tok_idx][0] = c;
+				tokens[tok_idx][1] = '\0';
+				tok_idx++;
+				lin_idx++;
+			}
+		}
+		/* regular characters */
+		else {
+			buf[buf_idx] = c;
+			buf_idx++;
+			lin_idx++;
+		}
+	}
 
-    /*
+	/* last check to see if we have some unwritten characters in the buffer */
+	if (buf_idx > 0) {
+		buf[buf_idx] = '\0';
+		tokens[tok_idx] = strdup(buf);
+		tok_idx++;
+		buf_idx = 0;
+	}
+
+	/*
      * Add a single NULL at the end of the array, because exec's require the
      * last element in the array to be a NULL
      */
-    args = realloc(args, (tokens_written + 1) * sizeof(char*));
-    args[tokens_written] = NULL;
+	tokens = realloc(tokens, (tok_idx + 1) * sizeof(char *));
+	tokens[tok_idx] = NULL;
+	return tokens;
+}
 
-    return args;
+/*
+ * ['bat', '-H', '/home/user/project/main.c', '|', 'grep', '-i' ,'printf']
+ *
+ * should turn into
+ *
+ * CMD first->append_mode = false
+ *          ->file_in = NULL // it gets it from its argument
+ *          ->file_out = fd[1]
+ *          ->args = ['bat', '-H', 'home/user/project/main.c']
+ *          ->type = CON_PIPE (enum CON, CON_PIPE = 1)
+ *          ->next = second
+ *
+ * CMD second->append_mode = false
+ *           ->file_in = fd[0]
+ *           ->file_out = NULL // stdout
+ *           ->args = ['grep', '-i', 'printf']
+ *           ->type = CON_NONE (enum CON, CON_NONE = 0)
+ *           ->next = NULL
+ */
+/*
+ * Helper function that initializes a CMD struct
+ */
+CMD *init_cmd(CMD *cmd)
+{
+	cmd->args = malloc(ARGS_SIZE * sizeof(char *));
+	cmd->args[0] = NULL;
+	cmd->file_in = NULL;
+	cmd->file_out = NULL;
+	cmd->append_mode = false;
+	cmd->type = NONE;
+	cmd->next = NULL;
+
+	return cmd;
+}
+/*
+ * Gets the tokens, returns the head of the linked list of commands.
+ * Check include/parser.h enum CON and struct CMD
+ */
+CMD *parser(char **tokens)
+{
+	/* NOT DONE YET */
+	CMD *head = malloc(sizeof(CMD));
+	CMD *curr = NULL;
+	CMD *next = NULL;
+	int arg_idx = 0;
+	int i = 0;
+	char c;
+
+	init_cmd(head);
+	curr = head;
+
+	while (tokens[i] != NULL) {
+		c = tokens[i][0];
+
+		/* check for connector */
+		if (c == '|' || c == ';') {
+			next = malloc(sizeof(CMD));
+			init_cmd(next);
+			curr->next = next;
+			curr->args[arg_idx] = NULL; /* end the command */
+
+			if (c == '|') {
+				curr->type = PIPE;
+			} else {
+				curr->type = SEQ;
+			}
+
+			i++;
+			arg_idx = 0;
+			curr = curr->next;
+		}
+		/* check for redir */
+		else if (c == '>' || c == '<') {
+			switch (c) {
+			case '>':
+				if (tokens[i][1] == '>') {
+					curr->append_mode = true;
+				}
+				curr->file_out = strdup(tokens[++i]);
+				i++;
+				break;
+			case '<':
+				curr->file_in = strdup(tokens[++i]);
+				i++;
+				break;
+			default:
+				fprintf(stderr,
+					"[ERROR] Parser failed at 'check for redirection'.\n");
+				exit(1);
+			}
+		}
+		/* regular argument */
+		else {
+			curr->args[arg_idx++] = strdup(tokens[i++]);
+		}
+	}
+	curr->args[arg_idx] = NULL;
+
+	i = 0;
+	while (tokens[i] != NULL) {
+		free(tokens[i++]);
+	}
+	free(tokens);
+	return head;
+}
+
+/*
+ * Free's the linked list.
+ */
+void free_cmds(CMD *head)
+{
+	int i;
+	CMD *curr = head;
+	CMD *next = NULL;
+
+	while (curr != NULL) {
+		i = 0;
+		next = curr->next;
+
+		while (curr->args[i] != NULL) {
+			free(curr->args[i++]);
+		}
+		free(curr->args);
+		free(curr->file_in);
+		free(curr->file_out);
+		free(curr);
+
+		curr = next;
+	}
 }

@@ -15,14 +15,27 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 #ifndef _PARSER_H_
-# define _PARSER_H_
+#define _PARSER_H_
 
 #include "shell_defs.h"
-#include <stdio.h>
-#include <string.h>
+#include <stdbool.h>
 
 /*
  * TODO: IMPLEMENT
+ *
+ * a general command struct. we need that to support pipelining and redirection.
+ * we need a lexer that will go through the entire command line char by char,
+ * then when it hits some pre-selected character combinations (e.g., |, ||, >,
+ * >>, <, &, &&, etc.), it should stop that command there (except for & because
+ * that doesn't split commands), and then use that information to separate the
+ * next command from the previous.
+ *
+ * then, after we build the AST of that line, we should parse the individual
+ * commands using our existing parser, giving it only a single command at a
+ * time.
+ *
+ * then the structure just changes like (char** args -> CMD command)
+ *
  * handle_quotes()
  * parse_redirection()
  * parse_pipeline()
@@ -32,12 +45,21 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
  * Temporary solution for tilde expansion. We will switch to a full Bison/Flex
  * parser in the future.
  */
-extern char** expand_tilde(char** args);
+extern char **expand_tilde(char **args);
 
 /*
- * Defines the function tokenize implemented in parser.c.
- * Gets line, tokenizes it with the " " (space) character, returns tokens.
+ * Gets the character array, returns tokens.
  */
-extern char** tokenize(char* line);
+extern char **lexer(char *args);
+
+/*
+ * Gets the tokens, returns the head of the linked list of commands.
+ */
+extern CMD *parser(char **line);
+
+/*
+ * Free's the linked list.
+ */
+extern void free_cmds(CMD *head);
 
 #endif /* _PARSER_H_ */

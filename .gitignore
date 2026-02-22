@@ -15,6 +15,7 @@ Dockerfile.*
 cbench.sh
 utils.sh
 utils/
+license-helper*.*
 
 # Debug Artifacts
 *.d

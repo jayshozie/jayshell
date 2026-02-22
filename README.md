@@ -98,11 +98,12 @@ separated from the built-in `cd` command.
     and physical paths; and error handling (needed more descriptive error
     messages)
 
-- [ ] **🔌 v3.0 - *Ritchie*:** Redirection, pipelining, logical execution,
-logical path tracking, and new built-ins (`echo`, `export`, `unset`, `env`)
+- [x] **🔌 v3.0 - *Ritchie*:** Redirection, pipelining, logical execution, and
+logical path tracking
 
 - [ ] **🕹️ v4.0 - *Thompson*:** Signal handling (`SIGINT`, `SIGTSTP`,
-`SIGQUIT`), and job control (`jobs`, `&`, `fg`, `bg`, `kill`, `history`)
+`SIGQUIT`), and job control (`echo`, `export`, `unset`, `env`, `jobs`, `&`,
+`fg`, `bg`, `kill`, `history`)
 
 - [ ] **📜 v5.0 - *Lovelace*:** Startup files (`.jayshellrc`,
 `.jayshell_aliasias`), shebang support, dynamic prompt (git status indicator,
@@ -119,6 +120,13 @@ types (`int`, `float`, `double`), and arithmetic operations
 ## 📝 References
 
 - **`TLPI`:** *The Linux Programming Interface, by Michael Kerrisk*
+
+## 🤝 Contributing
+
+You're more than welcome to open a pull request or an issue.
+
+If you're planning to open a PR, please check the
+[CONTRIBUTING.md](CONTRIBUTING.md) file located at the root of the repository.
 
 ## 📄 License
 

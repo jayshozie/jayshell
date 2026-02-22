@@ -15,30 +15,11 @@
 
 # Roadmap for Jayshell
 
-## 🔌 v3.0 - *Ritchie*
-
-*Focus:* I/O, Redirection, Environment
-
-- [ ] **Redirection Engine:** Implement <, >, >>, and 2> (stderr).
-
-- [ ] **The Pipe Operator:** Support for | to connect processes.
-
-- [ ] **Logical Execution:** Implement && (AND) and || (OR).
-
-- [ ] **Logical Path Tracking:** Ensure `cd` updates `PWD` with the user's input
-string, and `pwd` reads from `PWD` before falling back to `getcwd()`.
-    - **NOTE:** Add Check (If PWD doesn't exist or invalid, the shell should
-    always fall back to `getcwd`. This makes the shell self-healing.)
-
-- [ ] **Built-ins:**
-    - [ ] `echo`: With -n and -e flag support.
-    - [ ] `export`: To set environment variables.
-    - [ ] `unset`: To remove variables.
-    - [ ] `env`: To list current environment.
-
 ## 🕹️ v4.0 - *Thompson*
 
 *Focus:* Stability, Signal Handling, Job Control
+
+- [ ] **Logical Execution:** Implement && (AND) and || (OR).
 
 - [ ] **Signal Handling:** Correctly handle SIGINT (Ctrl+C), SIGQUIT (Ctrl+),
 and SIGTSTP (Ctrl+Z).
@@ -46,6 +27,10 @@ and SIGTSTP (Ctrl+Z).
 - [ ] **Job Control:** Support for backgrounding with &.
 
 - [ ] **Built-ins:**
+    - [ ] `echo`: With -n and -e flag support.
+    - [ ] `export`: To set environment variables.
+    - [ ] `unset`: To remove variables.
+    - [ ] `env`: To list current environment.
     - [ ] `jobs`: List active background tasks.
     - [ ] `fg` / `bg`: Move jobs between foreground and background.
     - [ ] `kill`: Send signals to processes by PID or Job ID.
@@ -168,3 +153,16 @@ variables are uninitialized on startup.
 
 - [x] **Symlink Support:** Rewrite `cd` and `pwd` logic to distinguish between
 logical paths and physical paths.
+
+## 🔌 v3.0 - *Ritchie*
+
+*Focus:* I/O, Redirection, Environment
+
+- [x] **Redirection Engine:** Implement <, >, >>, and 2> (stderr).
+
+- [x] **The Pipe Operator:** Support for | to connect processes.
+
+- [x] **Logical Path Tracking:** Ensure `cd` updates `PWD` with the user's input
+string, and `pwd` reads from `PWD` before falling back to `getcwd()`.
+    - **NOTE:** Add Check (If PWD doesn't exist or invalid, the shell should
+    always fall back to `getcwd`. This makes the shell self-healing.)

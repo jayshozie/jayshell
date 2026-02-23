@@ -15,7 +15,7 @@
 
 # Roadmap for Jayshell
 
-## 🕹️ v4.0 - *Thompson*
+## 🕹️ v3.5 - *Thompson*
 
 *Focus:* Stability, Signal Handling, Job Control
 
@@ -36,7 +36,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `kill`: Send signals to processes by PID or Job ID.
     - [ ] `history`: Integrated with ~/.jayshell_history for persistence.
 
-## 📜 v5.0 - *Lovelace*
+## 📜 v4.0 - *Lovelace*
 
 *Focus:* Customization, Script Execution, Alias Logic
 
@@ -55,7 +55,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `read`: Take user input into a variable.
     - [ ] `wait`: Wait for background processes to complete.
 
-## 🧬 v6.0 - *Backus*
+## 🧬 v5.0 - *Backus*
 
 *Focus:* Transitioning to a Formal Grammar with Flex & Bison.
 
@@ -71,7 +71,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `printf`: More robust output formatting.
     - [ ] `hash`: Command location caching for performance.
 
-## 🧠 v7.0 - *Turing*
+## 🧠 v6.0 - *Turing*
 
 *Focus:* Turing Completeness and Data Types.
 

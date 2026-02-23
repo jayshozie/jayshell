@@ -100,21 +100,20 @@ separated from the built-in `cd` command.
 
 - [x] **🔌 v3.0 - *Ritchie*:** Redirection, pipelining, logical execution, and
 logical path tracking
+    - [ ] **🕹️ v3.5 - *Thompson*:** Signal handling (`SIGINT`, `SIGTSTP`,
+    `SIGQUIT`), and job control (`echo`, `export`, `unset`, `env`, `jobs`, `&`,
+    `fg`, `bg`, `kill`, `history`)
 
-- [ ] **🕹️ v4.0 - *Thompson*:** Signal handling (`SIGINT`, `SIGTSTP`,
-`SIGQUIT`), and job control (`echo`, `export`, `unset`, `env`, `jobs`, `&`,
-`fg`, `bg`, `kill`, `history`)
-
-- [ ] **📜 v5.0 - *Lovelace*:** Startup files (`.jayshellrc`,
+- [ ] **📜 v4.0 - *Lovelace*:** Startup files (`.jayshellrc`,
 `.jayshell_aliasias`), shebang support, dynamic prompt (git status indicator,
 and cwd), and new built-ins (`source`, `alias` / `unalias`, `type`, `read`,
 `wait`)
 
-- [ ] **🧬 v6.0 - *Backus*:** Lexer/Parser rewrite using Bison/Flex, expansion
+- [ ] **🧬 v5.0 - *Backus*:** Lexer/Parser rewrite using Bison/Flex, expansion
 engine (quote handling `'`, `"`; escape characters `\`; command substitution
 `$(command)`; globbing `*`, `?`), and new built-ins (`printf`, `hash`)
 
-- [ ] **🧠 v7.0 - *Turing*:** Control flow (conditionals, logic, loops), data
+- [ ] **🧠 v6.0 - *Turing*:** Control flow (conditionals, logic, loops), data
 types (`int`, `float`, `double`), and arithmetic operations
 
 ## 📝 References

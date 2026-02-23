@@ -29,11 +29,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
  */
 #include <readline/readline.h>
 
-int i = 0;
 int status = 0;
 char *command;
 char **tokens; /* DYNAMICALLY ALLOCATED BY THE TOKENIZER */
-builtin_func run_builtin;
 
 int main()
 {

@@ -49,8 +49,8 @@ int builtin_cd(CMD *cmd)
 				}
 			}
 		} else if (strcmp(args[1], "-") == 0) {
-			if (is_valid_oldpwd !=
-			    true) { /* defined in shell_state.h */
+			if (is_valid_oldpwd != true) {
+				/* defined in shell_state.h */
 				status = 1;
 				fprintf(stderr,
 					"[ERROR] OLD_PWD not set yet.\n");

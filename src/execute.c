@@ -40,7 +40,7 @@ int plumber(CMD *curr, int fd_in, int fd_out)
 	}
 
 	/* input redirection */
-	if (curr->file_in != NULL) {
+	if (curr->file_in) {
 		if ((fd_in = open(curr->file_in, O_RDONLY)) == -1) {
 			status = errno;
 			fprintf(stderr,
@@ -53,12 +53,11 @@ int plumber(CMD *curr, int fd_in, int fd_out)
 		}
 	}
 	/* output redirection */
-	if (curr->file_out != NULL) {
-		if (curr->append_mode) {
+	if (curr->file_out) {
+		if (curr->append_mode)
 			flags = O_WRONLY | O_CREAT | O_APPEND;
-		} else {
+		else
 			flags = O_WRONLY | O_CREAT | O_TRUNC;
-		}
 
 		fd_out = open(curr->file_out, flags, 0644);
 		if (fd_out == -1) {
@@ -86,9 +85,8 @@ int __worker_builtin(builtin_func func, CMD *curr, int fd_in, int fd_out)
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 
-	if ((status = plumber(curr, fd_in, fd_out)) == 0) {
+	if ((status = plumber(curr, fd_in, fd_out)) == 0)
 		status = func(curr);
-	}
 
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdin);
@@ -103,9 +101,8 @@ pid_t __worker_extern(CMD *curr, int fd_in, int fd_out)
 	int status = 0;
 	pid_t pid = fork();
 	if (pid == 0) {
-		if ((status = plumber(curr, fd_in, fd_out)) != 0) {
+		if ((status = plumber(curr, fd_in, fd_out)) != 0)
 			exit(status);
-		}
 
 		if (execvp(curr->args[0], curr->args) == -1) {
 			status = errno;
@@ -132,7 +129,7 @@ int exec_cmds(CMD *head)
 	CMD *curr = head;
 
 	/* get the number of nodes in the linked list */
-	while (curr != NULL) {
+	while (curr) {
 		cmd_count++;
 		curr = curr->next;
 	}
@@ -142,8 +139,8 @@ int exec_cmds(CMD *head)
 
 	/* restart iterating over the list */
 	curr = head;
-	while (curr != NULL) {
-		if (curr->args[0] == NULL) {
+	while (curr) {
+		if (!curr->args[0]) {
 			break;
 		}
 		if (curr->type == PIPE) {
@@ -170,12 +167,10 @@ int exec_cmds(CMD *head)
 				__worker_extern(curr, fd_in, fd_out);
 		}
 
-		if (fd_in != STDIN_FILENO) {
+		if (fd_in != STDIN_FILENO)
 			close(fd_in);
-		}
-		if (fd_out != STDOUT_FILENO) {
+		if (fd_out != STDOUT_FILENO)
 			close(fd_out);
-		}
 
 		fd_in = next_fd_in;
 
@@ -185,12 +180,9 @@ int exec_cmds(CMD *head)
 	int tmp = 0;
 	for (int i = 0; i < fork_count; i++) {
 		waitpid(pids[i], &tmp, 0);
-		if (WIFEXITED(tmp)) {
+		if (WIFEXITED(tmp))
 			status = WEXITSTATUS(tmp);
-		}
 	}
-
 	free(pids);
-
 	return status;
 }

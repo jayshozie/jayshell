@@ -34,9 +34,8 @@ void init_shell_state(void)
 	int status = 0;
 	is_valid_oldpwd = false;
 
-	if ((usr_home = getenv("HOME")) == NULL) {
+	if ((usr_home = getenv("HOME")) == NULL)
 		fprintf(stderr, "[ERROR] HOME not set.");
-	}
 
 	if (getcwd(shell_cwd, sizeof(shell_cwd)) == NULL) {
 		fprintf(stderr, "[ERROR] Critical error. CWD is not set.");

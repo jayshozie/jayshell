@@ -41,12 +41,11 @@ builtin_func get_builtin(char *cmd)
 	int i = 0;
 	BUILTIN *curr = &builtins[i];
 
-	while (curr->cmd != NULL) {
-		if (strcmp(cmd, curr->cmd) == 0) {
+	while (curr->cmd) {
+		if (strcmp(cmd, curr->cmd) == 0)
 			return curr->func;
-		} else {
+		else
 			curr = &builtins[++i];
-		}
 	}
 	return NULL;
 }

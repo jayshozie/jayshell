@@ -31,7 +31,7 @@ char **expand_tilde(char **args)
 	char *remainder;
 	int dirsize;
 	char *home = getenv("HOME");
-	while (args[i] != NULL) {
+	while (args[i]) {
 		if (args[i][0] == '~') {
 			dirsize = strlen(home) + strlen(args[i]);
 			remainder = malloc(dirsize);
@@ -111,7 +111,7 @@ char **lexer(char *line)
 				/* skip the next character in line */
 				lin_idx += 2;
 			} else {
-                                /* output > and input < redirection path */
+				/* output > and input < redirection path */
 				tokens[tok_idx] = malloc(2);
 				tokens[tok_idx][0] = c;
 				tokens[tok_idx][1] = '\0';
@@ -193,7 +193,7 @@ CMD *parser(char **tokens)
 	init_cmd(head);
 	curr = head;
 
-	while (tokens[i] != NULL) {
+	while (tokens[i]) {
 		c = tokens[i][0];
 
 		/* check for connector */
@@ -203,11 +203,10 @@ CMD *parser(char **tokens)
 			curr->next = next;
 			curr->args[arg_idx] = NULL; /* end the command */
 
-			if (c == '|') {
+			if (c == '|')
 				curr->type = PIPE;
-			} else {
+			else
 				curr->type = SEQ;
-			}
 
 			i++;
 			arg_idx = 0;
@@ -217,9 +216,8 @@ CMD *parser(char **tokens)
 		else if (c == '>' || c == '<') {
 			switch (c) {
 			case '>':
-				if (tokens[i][1] == '>') {
+				if (tokens[i][1] == '>')
 					curr->append_mode = true;
-				}
 				curr->file_out = strdup(tokens[++i]);
 				i++;
 				break;
@@ -232,18 +230,16 @@ CMD *parser(char **tokens)
 					"[ERROR] Parser failed at 'check for redirection'.\n");
 				exit(1);
 			}
-		}
-		/* regular argument */
-		else {
+		} else {
+			/* regular argument */
 			curr->args[arg_idx++] = strdup(tokens[i++]);
 		}
 	}
 	curr->args[arg_idx] = NULL;
 
 	i = 0;
-	while (tokens[i] != NULL) {
+	while (tokens[i])
 		free(tokens[i++]);
-	}
 	free(tokens);
 	return head;
 }
@@ -257,13 +253,12 @@ void free_cmds(CMD *head)
 	CMD *curr = head;
 	CMD *next = NULL;
 
-	while (curr != NULL) {
+	while (curr) {
 		i = 0;
 		next = curr->next;
 
-		while (curr->args[i] != NULL) {
+		while (curr->args[i])
 			free(curr->args[i++]);
-		}
 		free(curr->args);
 		free(curr->file_in);
 		free(curr->file_out);

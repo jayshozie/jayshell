@@ -24,8 +24,7 @@ int builtin_exit(CMD *cmd)
 {
 	char **args = cmd->args;
 	unsigned long exit_val = 0;
-	if (args[1] != NULL) {
+	if (args[1])
 		exit_val = strtoul(args[1], NULL, 0);
-	}
 	exit(exit_val);
 }

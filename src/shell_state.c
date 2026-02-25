@@ -59,14 +59,6 @@ void init_shell_state(void)
 int update_cwd(void)
 {
 	int status = 0;
-	/*
-     * 1. copy shell_cwd -> shell_oldpwd
-     * 2. getcwd
-     * 3. sync env:
-     *      export OLDPWD using shell_oldpwd
-     *      export PWD using shell_cwd
-     * 4. return success/failure
-     */
 	strcpy(shell_oldpwd, shell_cwd);
 	if (getcwd(shell_cwd, PATH_MAX_SIZE) == NULL) {
 		status = errno;

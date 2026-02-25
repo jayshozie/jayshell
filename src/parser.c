@@ -21,9 +21,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <stdlib.h>
 #include <string.h>
 
-/* remove when building */
-// typedef struct CMD CMD;
-
+/*
+ * Gets the entire args of a command, expands the tilde (~), if and only if it's
+ * the first character in an argument.
+ */
 char **expand_tilde(char **args)
 {
 	int i = 0;
@@ -32,7 +33,6 @@ char **expand_tilde(char **args)
 	char *home = getenv("HOME");
 	while (args[i] != NULL) {
 		if (args[i][0] == '~') {
-			/* /home/user + ~/dir/to/chdir - ~ */
 			dirsize = strlen(home) + strlen(args[i]);
 			remainder = malloc(dirsize);
 			snprintf(remainder, dirsize, "%s%s", home, args[i] + 1);
@@ -63,14 +63,14 @@ char **lexer(char *line)
 			/* end of token, flush the buffer into the new token  */
 			if (buf_idx > 0) {
 				/* TODO
-                 * Find a way to get the buffer flusher out of these blocks.
-                 *
-                 * WHY?
-                 * Block repetition
-                 *
-                 * HOW?
-                 * Function maybe?
-                 */
+                                 * Find a way to get the buffer flusher out of these blocks.
+                                 *
+                                 * WHY?
+                                 * Block repetition
+                                 *
+                                 * HOW?
+                                 * Function maybe?
+                                 */
 				buf[buf_idx] = '\0';
 				tokens[tok_idx] = strdup(buf);
 				tok_idx++;
@@ -81,44 +81,45 @@ char **lexer(char *line)
 		/* special characters */
 		else if (c == '|' || c == '>' || c == '<' || c == ';') {
 			/* TODO
-             * There has to be a better way to check whether c is a special
-             * character. Not sure how this can be generalized and taken out of
-             * this specific line, but we have to find it.
-             *
-             * WHY?
-             * We'll have to check for the exact same characters in the parser
-             * too. So, code repetition.
-             *
-             * HOW?
-             * Separate function, maybe? An enum doesn't work, because we need a
-             * specific set of integers, not any integer. What we need is a
-             * Python/Bash style associative array, or a function that checks
-             * for the specific characters we're looking for.
-             */
-			if (buf_idx > 0) { /* flush buffer */
+                         * There has to be a better way to check whether c is a special
+                         * character. Not sure how this can be generalized and taken out of
+                         * this specific line, but we have to find it.
+                         *
+                         * WHY?
+                         * We'll have to check for the exact same characters in the parser
+                         * too. So, code repetition.
+                         *
+                         * HOW?
+                         * Separate function, maybe? An enum doesn't work, because we need a
+                         * specific set of integers, not any integer. What we need is a
+                         * Python/Bash style associative array, or a function that checks
+                         * for the specific characters we're looking for.
+                         */
+			if (buf_idx > 0) {
+				/* flush buffer */
 				buf[buf_idx] = '\0';
 				tokens[tok_idx] = strdup(buf);
 				tok_idx++;
 				buf_idx = 0;
 			}
 
-			if (c == '>' &&
-			    line[lin_idx + 1] == '>') { /* append mode check */
+			if (c == '>' && line[lin_idx + 1] == '>') {
+				/* >> append mode path */
 				tokens[tok_idx] = malloc(3);
 				strcpy(tokens[tok_idx], ">>");
 				tok_idx++;
-				lin_idx +=
-					2; /* skip the next character in line */
+				/* skip the next character in line */
+				lin_idx += 2;
 			} else {
+                                /* output > and input < redirection path */
 				tokens[tok_idx] = malloc(2);
 				tokens[tok_idx][0] = c;
 				tokens[tok_idx][1] = '\0';
 				tok_idx++;
 				lin_idx++;
 			}
-		}
-		/* regular characters */
-		else {
+		} else {
+			/* regular characters */
 			buf[buf_idx] = c;
 			buf_idx++;
 			lin_idx++;
@@ -134,9 +135,9 @@ char **lexer(char *line)
 	}
 
 	/*
-     * Add a single NULL at the end of the array, because exec's require the
-     * last element in the array to be a NULL
-     */
+         * Add a single NULL at the end of the array, because exec's require the
+         * last element in the array to be a NULL
+         */
 	tokens = realloc(tokens, (tok_idx + 1) * sizeof(char *));
 	tokens[tok_idx] = NULL;
 	return tokens;
@@ -182,7 +183,6 @@ CMD *init_cmd(CMD *cmd)
  */
 CMD *parser(char **tokens)
 {
-	/* NOT DONE YET */
 	CMD *head = malloc(sizeof(CMD));
 	CMD *curr = NULL;
 	CMD *next = NULL;

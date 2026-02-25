@@ -30,7 +30,6 @@ int builtin_cd(CMD *cmd)
 	char *dirname;
 
 	if (args[1] != NULL && args[2] != NULL) {
-		/* Too many arguments error implemented. */
 		fprintf(stderr, "[ERROR] Too many arguments.\n");
 	} else {
 		if (args[1] == NULL || args[1][0] == '\0') {

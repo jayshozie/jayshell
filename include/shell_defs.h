@@ -35,27 +35,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #ifndef STRUCT_CMD
 #define STRUCT_CMD
 
-/*
- * TODO: IMPLEMENT
- *
- * a general command struct. we need that to support pipelining and redirection.
- * we need a lexer that will go through the entire command line char by char,
- * then when it hits some pre-selected character combinations (e.g., |, ||, >,
- * >>, <, &, &&, etc.), it should stop that command there (except for & because
- * that doesn't split commands), and then use that information to separate the
- * next command from the previous.
- *
- * then, after we build the AST of that line, we should parse the individual
- * commands using our existing parser, giving it only a single command at a
- * time.
- *
- * then the structure just changes like (char** args -> CMD command)
- *
- * handle_quotes()
- * parse_redirection()
- * parse_pipeline()
- */
-
 typedef enum {
 	NONE,
 	PIPE, /* the character `|` */

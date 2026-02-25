@@ -19,6 +19,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+/*
+ * pwd: pwd [-LP]
+ * Print the name of the current working directory.
+ *
+ * Options:
+ *   -L	       print the value of $PWD if it names the current working
+ *             directory
+ *   -P	       print the physical directory, without any symbolic links
+ *
+ * By default, `pwd' behaves as if `-L' were specified.
+ *
+ * Exit Status:
+ * Returns 0 unless an invalid option is given or the current directory
+ * cannot be read.
+ */
 
 int builtin_pwd(CMD *cmd)
 {
@@ -27,9 +44,17 @@ int builtin_pwd(CMD *cmd)
 	if ((cwd = getenv("PWD")) == NULL) {
 		status = errno;
 		fprintf(stderr,
-			"[ERROR] Couldn't get environment variable 'PWD'. errno: %d\n",
+			"[ERROR] Couldn't get environment variable 'PWD'. Falling back to getcwd. errno: %d\n",
 			status);
-	}
+		if ((cwd = getcwd(NULL, 0)) == NULL) {
+			/* fallback to getcwd */
+			status = errno;
+			fprintf(stderr,
+				"[ERROR] Fellback to getcwd, but it also failed. errno: %d\n",
+				status);
+                        cwd = "UNKNOWN";
+		}
+        }
 	printf("%s\n", cwd);
 	return status;
 }

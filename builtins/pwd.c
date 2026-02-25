@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 #include "builtins.h"
 #include "shell_defs.h"
+#include <stdbool.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,7 +41,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 int builtin_pwd(CMD *cmd)
 {
 	int status = 0;
-	const char *cwd;
+	bool must_free = false;
+	char *cwd;
 	if ((cwd = getenv("PWD")) == NULL) {
 		status = errno;
 		fprintf(stderr,
@@ -52,9 +54,13 @@ int builtin_pwd(CMD *cmd)
 			fprintf(stderr,
 				"[ERROR] Fellback to getcwd, but it also failed. errno: %d\n",
 				status);
-                        cwd = "UNKNOWN";
+			cwd = "UNKNOWN";
+		} else {
+			must_free = true;
 		}
-        }
+	}
 	printf("%s\n", cwd);
+        if (must_free)
+                free(cwd);
 	return status;
 }

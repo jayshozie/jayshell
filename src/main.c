@@ -14,7 +14,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include "builtins.h"
 #include "execute.h"
 #include "parser.h"
 #include "shell_defs.h"
@@ -35,41 +34,18 @@ char **tokens; /* DYNAMICALLY ALLOCATED BY THE TOKENIZER */
 
 int main()
 {
-	/* initialize shell env vars */
 	init_shell_state();
-
 	while (true) {
-		/*
-         * 1. GET COMMAND ✔️
-         *  a. ADD TO HISTORY
-         * 2. TOKENIZE ✔️
-         * 3. FREE `command` ✔️
-         * 4. REQUEST BUILT-IN FUNCTION POINTER ✔️
-         *  a. IF NULL, CALL EXEC_EXTERNAL WITH ARGS ✔️
-         *  b. IF NOT, CALL THE RETURNED FUNCTION POINTER ✔️
-         * 5. CHECK STATUS ✔️
-         *  a. IF FAIL CALL PERROR OR SIMILAR ✔️
-         *  b. IF NOT DO NOTHING ✔️
-         * 6. GOTO 1
-         */
-
-		/* get prompt, if null readline failed */
 		if ((command = readline("$ ")) != NULL) {
-			/* tokenize command, args is dynamically allocated */
 			tokens = lexer(command);
-			/* readline uses heap to store the output, don't forget to free */
 			free(command);
-
 			tokens = expand_tilde(tokens);
-
 			CMD *head = parser(tokens);
-
 			if ((status = exec_cmds(head)) != 0) {
 				fprintf(stderr,
 					"[ERROR] Something went wrong. $? : %d\n",
 					status);
 			}
-
 			free_cmds(head);
 		} else {
 			free(command);

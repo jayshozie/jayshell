@@ -51,6 +51,7 @@ You should be able to just call `make release` in the root of the repository.
 ```
 > [!IMPORTANT]
 > Don't forget to run `make clean` before a rebuild.
+
 > [!NOTE]
 > You can use `make debug` to compile jayshell with the debugging flags.
 

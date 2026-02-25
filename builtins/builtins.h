@@ -22,10 +22,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 typedef int (*builtin_func)(CMD *cmd);
 
 typedef struct {
-	/* name of the command that will be used to run it */
-	char *cmd;
-	/* function pointer pointing to the function needed to run the command */
-	builtin_func func;
+	char *cmd; /* name of the command that will be used to run it */
+	builtin_func func; /* func ptr pointing to the func */
 } BUILTIN;
 
 /*

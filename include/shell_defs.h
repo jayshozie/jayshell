@@ -58,8 +58,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 typedef enum {
 	NONE,
-	PIPE, /* (|) */
-	SEQ, /* (;) */
+	PIPE, /* the character `|` */
+	SEQ, /* the character `;` */
 } CON;
 
 typedef struct CMD CMD;
@@ -71,7 +71,7 @@ struct CMD {
 	int append_mode; /* true if '>>', false if '>' */
 	CON type; /* how is this CMD connected to the next */
 
-	CMD *next; /* linked list */
+	CMD *next; /* next command in the list */
 };
 
 #endif /* STRUCT_CMD */

@@ -1,9 +1,7 @@
-# Current Status : `v2.0` Modularization Complete
+# Current Status : `v3.0` New Parser and Lexer
 
-* The monolithic `jayshell.c` has been successfully split into `src/`,
-`builtins/`, and `include/`.
-* Modular build system via `Makefile` is implemented.
-* `cd -` and `cd ~` fully functional.
+- **Completed the new Lexer and Parser**, which was needed to allow
+POSIX-compliant redirection and pipelining.
 
 ---
 

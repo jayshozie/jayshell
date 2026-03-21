@@ -27,59 +27,72 @@ int builtin_cd(CMD *cmd)
 {
 	char **args = cmd->args;
 	int status = 0;
-	char *dirname;
+	char *dirname, *home, *oldpwd;
 
 	if (args[1] != NULL && args[2] != NULL) {
-		fprintf(stderr, "[ERROR] Too many arguments.\n");
+		(void)fprintf(stderr, "[ERROR] Too many arguments.\n");
 	} else {
 		if (args[1] == NULL || args[1][0] == '\0') {
 			/* empty args[1] implemented, POSIX compliance */
-			if (chdir(getenv("HOME")) != 0) {
-				status = errno;
-				fprintf(stderr,
-					"[ERROR] Couldn't get environment variable 'HOME'. "
-					"errno: %d\n",
-					status);
-			} else {
-				if ((status = update_cwd()) != 0) {
-					fprintf(stderr,
-						"[ERROR] update_cwd had an error. errno: %d\n",
+			home = getenv("HOME");
+			if (home != NULL) {
+				if (chdir(home) != 0) {
+					status = errno;
+					(void)fprintf(
+						stderr,
+						"[ERROR] Couldn't get environment variable 'HOME'. "
+						"errno: %d\n",
 						status);
+				} else {
+					if ((status = update_cwd()) != 0) {
+						(void)fprintf(
+							stderr,
+							"[ERROR] update_cwd had an error. errno: %d\n",
+							status);
+					}
 				}
 			}
 		} else if (strcmp(args[1], "-") == 0) {
 			if (is_valid_oldpwd != true) {
 				/* defined in shell_state.h */
 				status = 1;
-				fprintf(stderr,
-					"[ERROR] OLD_PWD not set yet.\n");
+				(void)fprintf(stderr,
+					      "[ERROR] OLD_PWD not set yet.\n");
 			} else {
-				/* cd - implemented, POSIX compliance */
-				if (chdir(getenv("OLDPWD")) != 0) {
-					status = errno;
-					fprintf(stderr,
-						"[ERROR] Failed while changing 'PWD' to 'OLDPWD'. "
-						"errno: %d\n",
-						status);
-				} else {
-					if ((status = update_cwd()) != 0) {
-						fprintf(stderr,
-							"[ERROR] update_cwd had an error. errno: %d\n",
+				oldpwd = getenv("OLDPWD");
+				if (oldpwd != NULL) {
+					/* cd - implemented, POSIX compliance */
+					if (chdir(oldpwd) != 0) {
+						status = errno;
+						(void)fprintf(
+							stderr,
+							"[ERROR] Failed while changing 'PWD' to 'OLDPWD'. "
+							"errno: %d\n",
 							status);
+					} else {
+						if ((status = update_cwd()) !=
+						    0) {
+							(void)fprintf(
+								stderr,
+								"[ERROR] update_cwd had an error. errno: %d\n",
+								status);
+						}
+						printf("%s\n", getenv("PWD"));
 					}
-					printf("%s\n", getenv("PWD"));
 				}
 			}
 		} else {
 			dirname = args[1];
 			if (chdir(dirname) != 0) {
 				status = errno;
-				fprintf(stderr,
+				(void)fprintf(
+					stderr,
 					"[ERROR] Couldn't change directory. errno: %d\n",
 					status);
 			} else {
 				if ((status = update_cwd()) != 0) {
-					fprintf(stderr,
+					(void)fprintf(
+						stderr,
 						"[ERROR] update_cwd had an error. errno: %d\n",
 						status);
 				}

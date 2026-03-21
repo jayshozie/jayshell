@@ -28,6 +28,13 @@ release: jayshell
 check:
 	@echo 'Checking syntax ...'
 	$(CC) -fsyntax-only $(CFLAGS) $(SRCS)
+	@echo '=== Clang-Tidy ==='
+	@if command -v clang-tidy > /dev/null; then \
+		clang-tidy $(CLANG_TIDY_FLAGS) $(SRCS) -- $(CFLAGS) \
+			&& echo -e "$(GREEN)Pass: Check cleared.$(RESET)"; \
+	else \
+		echo -e "$(RED)clang-tidy not found.$(RESET)"; \
+	fi
 
 expand:
 	@echo 'Expanding macros to .i files ...'

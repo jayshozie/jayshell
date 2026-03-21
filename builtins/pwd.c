@@ -45,13 +45,13 @@ int builtin_pwd(CMD *cmd)
 	char *cwd;
 	if ((cwd = getenv("PWD")) == NULL) {
 		status = errno;
-		fprintf(stderr,
+		(void)fprintf(stderr,
 			"[ERROR] Couldn't get environment variable 'PWD'. Falling back to getcwd. errno: %d\n",
 			status);
 		if ((cwd = getcwd(NULL, 0)) == NULL) {
 			/* fallback to getcwd */
 			status = errno;
-			fprintf(stderr,
+			(void)fprintf(stderr,
 				"[ERROR] Fellback to getcwd, but it also failed. errno: %d\n",
 				status);
 			cwd = "UNKNOWN";

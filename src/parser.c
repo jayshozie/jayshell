@@ -32,10 +32,11 @@ char **expand_tilde(char **args)
 	int dirsize;
 	char *home = getenv("HOME");
 	while (args[i]) {
-		if (args[i][0] == '~') {
+		if (args[i][0] == '~' && home) {
 			dirsize = strlen(home) + strlen(args[i]);
 			remainder = malloc(dirsize);
-			snprintf(remainder, dirsize, "%s%s", home, args[i] + 1);
+			(void)snprintf(remainder, dirsize, "%s%s", home,
+				       args[i] + 1);
 			free(args[i]);
 			args[i] = remainder;
 		}
@@ -47,7 +48,7 @@ char **expand_tilde(char **args)
 /*
  * Gets the character array, returns tokens.
  */
-char **lexer(char *line)
+char **lexer(const char *line)
 {
 	char **tokens = malloc(ARGS_SIZE * sizeof(char *));
 	char buf[1024];
@@ -106,7 +107,8 @@ char **lexer(char *line)
 			if (c == '>' && line[lin_idx + 1] == '>') {
 				/* >> append mode path */
 				tokens[tok_idx] = malloc(3);
-				strcpy(tokens[tok_idx], ">>");
+				strlcpy(tokens[tok_idx], ">>",
+					2 * sizeof(char));
 				tok_idx++;
 				/* skip the next character in line */
 				lin_idx += 2;
@@ -131,7 +133,6 @@ char **lexer(char *line)
 		buf[buf_idx] = '\0';
 		tokens[tok_idx] = strdup(buf);
 		tok_idx++;
-		buf_idx = 0;
 	}
 
 	/*
@@ -226,7 +227,8 @@ CMD *parser(char **tokens)
 				i++;
 				break;
 			default:
-				fprintf(stderr,
+				(void)fprintf(
+					stderr,
 					"[ERROR] Parser failed at 'check for redirection'.\n");
 				exit(1);
 			}

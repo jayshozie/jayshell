@@ -43,7 +43,8 @@ int plumber(CMD *curr, int fd_in, int fd_out)
 	if (curr->file_in) {
 		if ((fd_in = open(curr->file_in, O_RDONLY)) == -1) {
 			status = errno;
-			fprintf(stderr,
+			(void)fprintf(
+				stderr,
 				"[ERROR] Couldn't open file '%s'. errno: %d\n",
 				curr->file_in, status);
 			return status;
@@ -62,7 +63,8 @@ int plumber(CMD *curr, int fd_in, int fd_out)
 		fd_out = open(curr->file_out, flags, 0644);
 		if (fd_out == -1) {
 			status = errno;
-			fprintf(stderr,
+			(void)fprintf(
+				stderr,
 				"[ERROR] Couldn't open file '%s'. errno: %d\n",
 				curr->file_out, status);
 			return status;
@@ -88,9 +90,13 @@ int __worker_builtin(builtin_func func, CMD *curr, int fd_in, int fd_out)
 	if ((status = plumber(curr, fd_in, fd_out)) == 0)
 		status = func(curr);
 
-	dup2(saved_stdin, STDIN_FILENO);
+	if (saved_stdin >= 0) {
+		dup2(saved_stdin, STDIN_FILENO);
+	}
 	close(saved_stdin);
-	dup2(saved_stdout, STDOUT_FILENO);
+	if (saved_stdout >= 0) {
+		dup2(saved_stdout, STDOUT_FILENO);
+	}
 	close(saved_stdout);
 
 	return status;
@@ -107,7 +113,8 @@ pid_t __worker_extern(CMD *curr, int fd_in, int fd_out)
 		if (execvp(curr->args[0], curr->args) == -1) {
 			status = errno;
 			if (status == ENOENT) {
-				fprintf(stderr,
+				(void)fprintf(
+					stderr,
 					"[ERROR] Command '%s' not found. errno: %d\n",
 					curr->args[0], status);
 			}
@@ -120,6 +127,7 @@ pid_t __worker_extern(CMD *curr, int fd_in, int fd_out)
 int exec_cmds(CMD *head)
 {
 	builtin_func builtin;
+	pid_t *pids = NULL;
 	int cmd_count = 0;
 	int fork_count = 0;
 	int status = 0;
@@ -135,7 +143,8 @@ int exec_cmds(CMD *head)
 	}
 
 	/* use the number of nodes to malloc an array of pids */
-	pid_t *pids = malloc(cmd_count * sizeof(pid_t));
+	if ((cmd_count * sizeof(pid_t)) > 0)
+		pids = malloc(cmd_count * sizeof(pid_t));
 
 	/* restart iterating over the list */
 	curr = head;
@@ -147,7 +156,8 @@ int exec_cmds(CMD *head)
 			int pipedes[2];
 			if (pipe(pipedes) != 0) {
 				status = errno;
-				fprintf(stderr,
+				(void)fprintf(
+					stderr,
 					"[ERROR] Couldn't create pipe. errno: %d\n",
 					status);
 				break;
@@ -183,6 +193,7 @@ int exec_cmds(CMD *head)
 		if (WIFEXITED(tmp))
 			status = WEXITSTATUS(tmp);
 	}
-	free(pids);
+	if (pids)
+		free(pids);
 	return status;
 }

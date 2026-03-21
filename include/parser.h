@@ -50,12 +50,12 @@ extern char **expand_tilde(char **args);
 /*
  * Gets the character array, returns tokens.
  */
-extern char **lexer(char *args);
+extern char **lexer(const char *line);
 
 /*
  * Gets the tokens, returns the head of the linked list of commands.
  */
-extern CMD *parser(char **line);
+extern CMD *parser(char **tokens);
 
 /*
  * Free's the linked list.

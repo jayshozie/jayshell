@@ -42,7 +42,7 @@ int main()
 			tokens = expand_tilde(tokens);
 			CMD *head = parser(tokens);
 			if ((status = exec_cmds(head)) != 0) {
-				fprintf(stderr,
+				(void)fprintf(stderr,
 					"[ERROR] Something went wrong. $? : %d\n",
 					status);
 			}

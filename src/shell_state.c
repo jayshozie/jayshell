@@ -35,16 +35,16 @@ void init_shell_state(void)
 	is_valid_oldpwd = false;
 
 	if ((usr_home = getenv("HOME")) == NULL)
-		fprintf(stderr, "[ERROR] HOME not set.");
+		(void)fprintf(stderr, "[ERROR] HOME not set.");
 
 	if (getcwd(shell_cwd, sizeof(shell_cwd)) == NULL) {
-		fprintf(stderr, "[ERROR] Critical error. CWD is not set.");
+		(void)fprintf(stderr, "[ERROR] Critical error. CWD is not set.");
 		exit(1);
 	}
 
 	if (setenv("PWD", shell_cwd, 1) != 0) {
 		status = errno;
-		fprintf(stderr,
+		(void)fprintf(stderr,
 			"[ERROR] Couldn't set environment variable 'PWD'. errno: %d",
 			status);
 	}
@@ -58,21 +58,21 @@ void init_shell_state(void)
 int update_cwd(void)
 {
 	int status = 0;
-	strcpy(shell_oldpwd, shell_cwd);
+	strlcpy(shell_oldpwd, shell_cwd, PATH_MAX_SIZE);
 	if (getcwd(shell_cwd, PATH_MAX_SIZE) == NULL) {
 		status = errno;
-		fprintf(stderr, "[ERROR] Couldn't get cwd. errno: %d\n",
+		(void)fprintf(stderr, "[ERROR] Couldn't get cwd. errno: %d\n",
 			status);
 	}
 	if (setenv("OLDPWD", shell_oldpwd, 1) != 0) {
 		status = errno;
-		fprintf(stderr,
+		(void)fprintf(stderr,
 			"[ERROR] Couldn't set environment variable 'OLDPWD'. errno: %d\n",
 			status);
 	}
 	if (setenv("PWD", shell_cwd, 1) != 0) {
 		status = errno;
-		fprintf(stderr,
+		(void)fprintf(stderr,
 			"[ERROR] Couldn't set environment variable 'PWD'. errno: %d\n",
 			status);
 	}

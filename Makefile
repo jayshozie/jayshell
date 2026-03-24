@@ -15,6 +15,19 @@ DEPS = $(OBJS:.o=.d)
 vpath %.c src builtins
 TARGET = ./jayshell
 
+BLACK   := \033[30m
+RED     := \033[31m
+GREEN   := \033[32m
+YELLOW  := \033[33m
+BLUE    := \033[34m
+MAGENTA := \033[35m
+CYAN    := \033[36m
+WHITE   := \033[37m
+BOLD    := \033[1m
+RESET   := \033[0m
+
+run: run-release
+
 run-debug: debug
 	$(TARGET)
 debug: CFLAGS += -g
@@ -27,14 +40,14 @@ release: jayshell
 
 
 check:
-	@echo '=== Syntax Check via GCC ==='
+	@echo -e "$(BLUE)$(BOLD)=== Syntax Check via GCC ===$(RESET)"
 	$(CC) -fsyntax-only $(CFLAGS) $(SRCS)
-	@echo '=== Clang-Tidy ==='
+	@echo -e "$(BLUE)$(BOLD)=== Clang-Tidy ===$(RESET)"
 	@if command -v clang-tidy > /dev/null; then \
 		clang-tidy $(CLANG_TIDY_FLAGS) $(SRCS) -- $(CFLAGS) \
-			&& echo -e "$(GREEN)Pass: Check cleared.$(RESET)"; \
+			&& echo -e "$(GREEN)$(BOLD)[PASS] Check cleared.$(RESET)"; \
 	else \
-		echo -e "$(RED)clang-tidy not found.$(RESET)"; \
+		echo -e "$(RED)$(BOLD)[ERROR] clang-tidy not found.$(RESET)"; \
 	fi
 
 expand:
@@ -49,28 +62,25 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 clean:
-	rm -f jayshell
+	rm -f jayshell jayshell.hex
 	rm -rf $(OBJDIR)
 	rm -rf debug_preproc/
-
-GREEN  := $(shell tput -Txterm setaf 2)
-RESET  := $(shell tput -Txterm sgr0)
 
 help:
 	@echo ''
 	@echo 'Usage:'
-	@echo '  ${GREEN}make run-release${RESET}    Build jayshell for release and run it'
-	@echo '  ${GREEN}make run-debug${RESET}      Build jayshell for debug and run it'
-	@echo '  ${GREEN}make run${RESET}            Build jayshell for release and run it'
-	@echo '  ${GREEN}make release${RESET}        Build jayshell for release'
-	@echo '  ${GREEN}make debug${RESET}          Build jayshell with debugging information'
-	@echo '  ${GREEN}make check${RESET}          Check for syntax errors'
-	@echo '  ${GREEN}make expand${RESET}         Only expansion, no compilation'
-	@echo '  ${GREEN}make clean${RESET}          Clean object/intermediary/executable files'
-	@echo '  ${GREEN}make help${RESET}           Print this message'
+	@echo '  $(GREEN)make run$(RESET)            Alias for run-release'
+	@echo '  $(GREEN)make run-release$(RESET)    Build jayshell for release and run it'
+	@echo '  $(GREEN)make run-debug$(RESET)      Build jayshell for debug and run it'
+	@echo '  $(GREEN)make release$(RESET)        Build jayshell for release'
+	@echo '  $(GREEN)make debug$(RESET)          Build jayshell with debugging information'
+	@echo '  $(GREEN)make check$(RESET)          Check for syntax errors'
+	@echo '  $(GREEN)make expand$(RESET)         Only expansion, no compilation'
+	@echo '  $(GREEN)make clean$(RESET)          Clean object/intermediary/executable files'
+	@echo '  $(GREEN)make help$(RESET)           Print this message'
 	@echo ''
 
-jayshell: CFLAGS += -MMD
+# jayshell: CFLAGS += -MMD
 jayshell: $(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
 
@@ -79,6 +89,6 @@ obj/%.o : %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # cli options
-.PHONY: release debug check expand clean help run-release run-debug
+.PHONY: release debug check expand clean help run run-release run-debug
 
 -include $(DEPS)

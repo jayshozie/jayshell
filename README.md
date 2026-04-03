@@ -101,9 +101,10 @@ separated from the built-in `cd` command.
 
 - [x] **🔌 v3.0 - *Ritchie*:** Redirection, pipelining, logical execution, and
 logical path tracking
-    - [ ] **🕹️ v3.5 - *Thompson*:** Signal handling (`SIGINT`, `SIGTSTP`,
-    `SIGQUIT`), and job control (`echo`, `export`, `unset`, `env`, `jobs`, `&`,
-    `fg`, `bg`, `kill`, `history`)
+    - [ ] **🕹️ v3.5 - *Thompson*:** Signal handling, job control, and a refactored execution model.
+        - [ ] Implement signal handling (`SIGINT`, `SIGTSTP`, `SIGQUIT`).
+        - [ ] Implement job control and new built-ins (`echo`, `export`, `unset`, `env`, `jobs`, `&`, `fg`, `bg`, `kill`, `history`).
+        - [ ] Refactor the command execution logic to properly support job control; this requires separating the process forking and waiting stages.
 
 - [ ] **📜 v4.0 - *Lovelace*:** Startup files (`.jayshellrc`,
 `.jayshell_aliasias`), shebang support, dynamic prompt (git status indicator,

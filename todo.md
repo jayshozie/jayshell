@@ -17,6 +17,8 @@ POSIX-compliant redirection and pipelining.
 
 *Focus:* Stability, Signal Handling, Job Control
 
+- [ ] **Refactor Process Management:** Consolidate the forking and waiting logic in `exec_cmds`. The current iterative model is a blocker for job control. The goal is to fork all processes in a pipeline first, collect their PIDs, and then wait for them in a separate, dedicated loop.
+
 - [ ] **Logical Execution:** Implement && (AND) and || (OR).
 
 - [ ] **Signal Handling:** Correctly handle SIGINT (Ctrl+C), SIGQUIT (Ctrl+),

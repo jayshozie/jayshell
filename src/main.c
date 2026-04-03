@@ -40,12 +40,8 @@ int main()
 			tokens = lexer(command);
 			free(command);
 			tokens = expand_tilde(tokens);
-			CMD *head = parser(tokens);
-			if ((status = exec_cmds(head)) != 0) {
-				(void)fprintf(stderr,
-					"[ERROR] Something went wrong. $? : %d\n",
-					status);
-			}
+			CMD *head = parser((const char **)tokens);
+			exec_cmds(head);
 			free_cmds(head);
 		} else {
 			free(command);

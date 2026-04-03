@@ -101,21 +101,26 @@ separated from the built-in `cd` command.
 
 - [x] **🔌 v3.0 - *Ritchie*:** Redirection, pipelining, logical execution, and
 logical path tracking
-    - [ ] **🕹️ v3.5 - *Thompson*:** Signal handling, job control, and a refactored execution model.
-        - [ ] Implement signal handling (`SIGINT`, `SIGTSTP`, `SIGQUIT`).
-        - [ ] Implement job control and new built-ins (`echo`, `export`, `unset`, `env`, `jobs`, `&`, `fg`, `bg`, `kill`, `history`).
-        - [ ] Refactor the command execution logic to properly support job control; this requires separating the process forking and waiting stages.
 
-- [ ] **📜 v4.0 - *Lovelace*:** Startup files (`.jayshellrc`,
+- [ ] **🕹️ v4.0 - *Thompson*:** Signal handling, job control, and a
+refactored execution model.
+    - [ ] Implement signal handling (`SIGINT`, `SIGTSTP`, `SIGQUIT`).
+    - [ ] Implement job control and new built-ins (`echo`, `export`,
+    `unset`, `env`, `jobs`, `&`, `fg`, `bg`, `kill`, `history`).
+    - [ ] Refactor the command execution logic to properly support job
+    control; this requires separating the process forking and waiting
+    stages.
+
+- [ ] **📜 v5.0 - *Lovelace*:** Startup files (`.jayshellrc`,
 `.jayshell_aliasias`), shebang support, dynamic prompt (git status indicator,
 and cwd), and new built-ins (`source`, `alias` / `unalias`, `type`, `read`,
 `wait`)
 
-- [ ] **🧬 v5.0 - *Backus*:** Lexer/Parser rewrite using Bison/Flex, expansion
+- [ ] **🧬 v6.0 - *Backus*:** Lexer/Parser rewrite using Bison/Flex, expansion
 engine (quote handling `'`, `"`; escape characters `\`; command substitution
 `$(command)`; globbing `*`, `?`), and new built-ins (`printf`, `hash`)
 
-- [ ] **🧠 v6.0 - *Turing*:** Control flow (conditionals, logic, loops), data
+- [ ] **🧠 v7.0 - *Turing*:** Control flow (conditionals, logic, loops), data
 types (`int`, `float`, `double`), and arithmetic operations
 
 ## 📝 References

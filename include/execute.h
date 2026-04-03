@@ -26,20 +26,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
  */
 extern int exec_cmds(CMD *head);
 
-/*
- * Does plumbing work. Doesn't return.
- */
-extern int plumber(CMD *curr, int fd_in, int fd_out);
-
-/*
- *
- */
-extern int __worker_builtin(builtin_func func, CMD *curr, int fd_in,
-			    int fd_out);
-
-/*
- * Calls dup2 with the correct arguments
- */
-extern pid_t __worker_extern(CMD *curr, int fd_in, int fd_out);
-
 #endif /* _EXECUTE_H_ */

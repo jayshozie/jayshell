@@ -36,19 +36,22 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #define STRUCT_CMD
 
 typedef enum {
-	NONE,
-	PIPE, /* the character `|` */
-	SEQ, /* the character `;` */
+	OP_NONE,
+	OP_PIPE, /* the character `|` */
+	OP_SEQ,	 /* the character `;` */
+	OP_AND,	 /* the character combination `&&`  */
+	OP_OR,	 /* the character combination `||`  */
 } CON;
 
 typedef struct CMD CMD;
 struct CMD {
 	char **args; /* e.g. ['bat', '-H', '/home/test/project/main.c'] */
 
-	char *file_in; /* < file.txt */
-	char *file_out; /* > file.txt */
+	char *file_in;	 /* < file.txt */
+	char *file_out;	 /* > file.txt */
 	int append_mode; /* true if '>>', false if '>' */
-	CON type; /* how is this CMD connected to the next */
+	CON type;		 /* how is this CMD connected to the next */
+	int exit_status; /* needed for AND and OR separated lists */
 
 	CMD *next; /* next command in the list */
 };

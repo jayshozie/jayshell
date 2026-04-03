@@ -13,13 +13,11 @@ POSIX-compliant redirection and pipelining.
 
 # Roadmap for Jayshell
 
-## 🕹️ v3.5 - *Thompson*
+## 🕹️ v4.0 - *Thompson*
 
 *Focus:* Stability, Signal Handling, Job Control
 
-- [ ] **Refactor Process Management:** Consolidate the forking and waiting logic in `exec_cmds`. The current iterative model is a blocker for job control. The goal is to fork all processes in a pipeline first, collect their PIDs, and then wait for them in a separate, dedicated loop.
-
-- [ ] **Logical Execution:** Implement && (AND) and || (OR).
+- [x] **Logical Execution:** Implement && (AND) and || (OR).
 
 - [ ] **Signal Handling:** Correctly handle SIGINT (Ctrl+C), SIGQUIT (Ctrl+),
 and SIGTSTP (Ctrl+Z).
@@ -36,7 +34,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `kill`: Send signals to processes by PID or Job ID.
     - [ ] `history`: Integrated with ~/.jayshell_history for persistence.
 
-## 📜 v4.0 - *Lovelace*
+## 📜 v5.0 - *Lovelace*
 
 *Focus:* Customization, Script Execution, Alias Logic
 
@@ -55,7 +53,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `read`: Take user input into a variable.
     - [ ] `wait`: Wait for background processes to complete.
 
-## 🧬 v5.0 - *Backus*
+## 🧬 v6.0 - *Backus*
 
 *Focus:* Transitioning to a Formal Grammar with Flex & Bison.
 
@@ -71,7 +69,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `printf`: More robust output formatting.
     - [ ] `hash`: Command location caching for performance.
 
-## 🧠 v6.0 - *Turing*
+## 🧠 v7.0 - *Turing*
 
 *Focus:* Turing Completeness and Data Types.
 

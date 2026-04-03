@@ -55,7 +55,7 @@ extern char **lexer(const char *line);
 /*
  * Gets the tokens, returns the head of the linked list of commands.
  */
-extern CMD *parser(char **tokens);
+extern CMD *parser(const char **tokens);
 
 /*
  * Free's the linked list.

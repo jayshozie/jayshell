@@ -35,8 +35,7 @@ char **expand_tilde(char **args)
 		if (args[i][0] == '~' && home) {
 			dirsize = strlen(home) + strlen(args[i]);
 			remainder = malloc(dirsize);
-			(void)snprintf(remainder, dirsize, "%s%s", home,
-				       args[i] + 1);
+			(void)snprintf(remainder, dirsize, "%s%s", home, args[i] + 1);
 			free(args[i]);
 			args[i] = remainder;
 		}
@@ -64,14 +63,14 @@ char **lexer(const char *line)
 			/* end of token, flush the buffer into the new token  */
 			if (buf_idx > 0) {
 				/* TODO
-                                 * Find a way to get the buffer flusher out of these blocks.
-                                 *
-                                 * WHY?
-                                 * Block repetition
-                                 *
-                                 * HOW?
-                                 * Function maybe?
-                                 */
+				 * Find a way to get the buffer flusher out of these blocks.
+				 *
+				 * WHY?
+				 * Block repetition
+				 *
+				 * HOW?
+				 * Function maybe?
+				 */
 				buf[buf_idx] = '\0';
 				tokens[tok_idx] = strdup(buf);
 				tok_idx++;
@@ -80,22 +79,22 @@ char **lexer(const char *line)
 			lin_idx++;
 		}
 		/* special characters */
-		else if (c == '|' || c == '>' || c == '<' || c == ';') {
+		else if (c == '|' || c == '>' || c == '<' || c == ';' || c == '&') {
 			/* TODO
-                         * There has to be a better way to check whether c is a special
-                         * character. Not sure how this can be generalized and taken out of
-                         * this specific line, but we have to find it.
-                         *
-                         * WHY?
-                         * We'll have to check for the exact same characters in the parser
-                         * too. So, code repetition.
-                         *
-                         * HOW?
-                         * Separate function, maybe? An enum doesn't work, because we need a
-                         * specific set of integers, not any integer. What we need is a
-                         * Python/Bash style associative array, or a function that checks
-                         * for the specific characters we're looking for.
-                         */
+			 * There has to be a better way to check whether c is a special
+			 * character. Not sure how this can be generalized and taken out of
+			 * this specific line, but we have to find it.
+			 *
+			 * WHY?
+			 * We'll have to check for the exact same characters in the parser
+			 * too. So, code repetition.
+			 *
+			 * HOW?
+			 * Separate function, maybe? An enum doesn't work, because we need a
+			 * specific set of integers, not any integer. What we need is a
+			 * Python/Bash style associative array, or a function that checks
+			 * for the specific characters we're looking for.
+			 */
 			if (buf_idx > 0) {
 				/* flush buffer */
 				buf[buf_idx] = '\0';
@@ -106,11 +105,20 @@ char **lexer(const char *line)
 
 			if (c == '>' && line[lin_idx + 1] == '>') {
 				/* >> append mode path */
-				tokens[tok_idx] = malloc(3);
-				strlcpy(tokens[tok_idx], ">>",
-					2 * sizeof(char));
+				tokens[tok_idx] = malloc(sizeof(">>"));
+				strlcpy(tokens[tok_idx], ">>", 3 * sizeof(char));
 				tok_idx++;
 				/* skip the next character in line */
+				lin_idx += 2;
+			} else if (c == '&' && line[lin_idx + 1] == '&') {
+				tokens[tok_idx] = malloc(sizeof("&&"));
+				strlcpy(tokens[tok_idx], "&&", 3 * sizeof(char));
+				tok_idx++;
+				lin_idx += 2;
+			} else if (c == '|' && line[lin_idx + 1] == '|' ) {
+				tokens[tok_idx] = malloc(sizeof("||"));
+				strlcpy(tokens[tok_idx], "||", 3 * sizeof(char));
+				tok_idx++;
 				lin_idx += 2;
 			} else {
 				/* output > and input < redirection path */
@@ -136,9 +144,9 @@ char **lexer(const char *line)
 	}
 
 	/*
-         * Add a single NULL at the end of the array, because exec's require the
-         * last element in the array to be a NULL
-         */
+	 * Add a single NULL at the end of the array, because exec's require the
+	 * last element in the array to be a NULL
+	 */
 	tokens = realloc(tokens, (tok_idx + 1) * sizeof(char *));
 	tokens[tok_idx] = NULL;
 	return tokens;
@@ -163,8 +171,9 @@ char **lexer(const char *line)
  *           ->type = CON_NONE (enum CON, CON_NONE = 0)
  *           ->next = NULL
  */
+
 /*
- * Helper function that initializes a CMD struct
+ * Helper function that initializes a CMD struct for you to fill up.
  */
 CMD *init_cmd(CMD *cmd)
 {
@@ -173,7 +182,8 @@ CMD *init_cmd(CMD *cmd)
 	cmd->file_in = NULL;
 	cmd->file_out = NULL;
 	cmd->append_mode = false;
-	cmd->type = NONE;
+	cmd->type = OP_NONE;
+	cmd->exit_status = 0;
 	cmd->next = NULL;
 
 	return cmd;
@@ -182,7 +192,7 @@ CMD *init_cmd(CMD *cmd)
  * Gets the tokens, returns the head of the linked list of commands.
  * Check include/parser.h enum CON and struct CMD
  */
-CMD *parser(char **tokens)
+CMD *parser(const char **tokens)
 {
 	CMD *head = malloc(sizeof(CMD));
 	CMD *curr = NULL;
@@ -204,10 +214,14 @@ CMD *parser(char **tokens)
 			curr->next = next;
 			curr->args[arg_idx] = NULL; /* end the command */
 
-			if (c == '|')
-				curr->type = PIPE;
-			else
-				curr->type = SEQ;
+			if (c == '|') {
+				if (tokens[i][1] == '|')
+					curr->type = OP_OR;
+				else
+					curr->type = OP_PIPE;
+			} else {
+				curr->type = OP_SEQ;
+			}
 
 			i++;
 			arg_idx = 0;
@@ -232,6 +246,16 @@ CMD *parser(char **tokens)
 					"[ERROR] Parser failed at 'check for redirection'.\n");
 				exit(1);
 			}
+		} else if (c == '&' && tokens[i][1] == '&') {
+			next = malloc(sizeof(CMD));
+			init_cmd(next);
+			curr->next = next;
+			curr->args[arg_idx] = NULL;
+			curr->type = OP_AND;
+
+			i++;
+			arg_idx = 0;
+			curr = curr->next;
 		} else {
 			/* regular argument */
 			curr->args[arg_idx++] = strdup(tokens[i++]);

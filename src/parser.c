@@ -192,7 +192,7 @@ CMD *init_cmd(CMD *cmd)
  * Gets the tokens, returns the head of the linked list of commands.
  * Check include/parser.h enum CON and struct CMD
  */
-CMD *parser(const char **tokens)
+CMD *parser(char **tokens)
 {
 	CMD *head = malloc(sizeof(CMD));
 	CMD *curr = NULL;

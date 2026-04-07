@@ -40,7 +40,7 @@ int main()
 			tokens = lexer(command);
 			free(command);
 			tokens = expand_tilde(tokens);
-			CMD *head = parser((const char **)tokens);
+			CMD *head = parser(tokens);
 			exec_cmds(head);
 			free_cmds(head);
 		} else {

@@ -7,15 +7,17 @@ built-ins, for now ;).
 ## 🚀 Features
 
 * Modular File Structure for Easier Expansion
-* `exit` (with exit codes)
-* `cd` (including `cd - `)
-* `pwd`
-* `~` Expansion
+* Core built-ins: `exit`, `cd`, `pwd`
+* Path Expansion: `~`, `cd -`
+* I/O Redirection: `<`, `>`, `>>`
+* Pipelining: `|`
+* Logical Operators: `&&`, `||`
+* Basic Quote Handling: `'...'` and `"..."` for strings with spaces.
 
 ## 🛠️ Requirements
 
 As **jayshell** evolves through its milestones named after Computer Science
-pioneers, the dependencies and requirements will scale accordingly.
+pioneers, the dependencies, and requirements will scale accordingly.
 
 ### 🏗️ Core Requirements (v1.0 - v5.0)
 
@@ -99,12 +101,17 @@ separated from the built-in `cd` command.
     and physical paths; and error handling (needed more descriptive error
     messages)
 
-- [x] **🔌 v3.0 - *Ritchie*:** Redirection, pipelining, logical execution, and
-logical path tracking
+- [x] **🔌 v3.0 - *Ritchie*:** Redirection, pipelining, and a new parser/lexer
+to enable POSIX-compliant I/O.
+    - [x] Implemented I/O redirection (`<`, `>`, `>>`).
+    - [x] Implemented the pipe operator (`|`).
+    - [x] Implemented logical execution operators (`&&`, `||`).
+    - [x] Began the migration to fixed-width integer types (`<stdint.h>`) for
+    better portability.
 
-- [ ] **🕹️ v4.0 - *Thompson*:** Signal handling, job control, and a
-refactored execution model.
-    - [ ] Implement signal handling (`SIGINT`, `SIGTSTP`, `SIGQUIT`).
+- [ ] **🕹️ v4.0 - *Thompson*:** Signal handling, job control, and a refactored
+expansion engine.
+    - [x] Basic quote handling (`'` and `"`) to allow for arguments with spaces.
     - [ ] Implement job control and new built-ins (`echo`, `export`,
     `unset`, `env`, `jobs`, `&`, `fg`, `bg`, `kill`, `history`).
     - [ ] Refactor the command execution logic to properly support job
@@ -112,9 +119,9 @@ refactored execution model.
     stages.
 
 - [ ] **📜 v5.0 - *Lovelace*:** Startup files (`.jayshellrc`,
-`.jayshell_aliasias`), shebang support, dynamic prompt (git status indicator,
-and cwd), and new built-ins (`source`, `alias` / `unalias`, `type`, `read`,
-`wait`)
+`.jayshell_aliases`), shebang support, dynamic prompt (optional git status
+indicator, and cwd), and new built-ins (`source`, `alias` / `unalias`, `type`,
+`read`, `wait`), signal handling `SIGINT`, `SIGTSTP`, `SIGQUIT`).
 
 - [ ] **🧬 v6.0 - *Backus*:** Lexer/Parser rewrite using Bison/Flex, expansion
 engine (quote handling `'`, `"`; escape characters `\`; command substitution

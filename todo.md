@@ -19,7 +19,11 @@ POSIX-compliant redirection and pipelining.
 
 - [x] Switch to `<stdint.h>` integer definitions.
 
-- [x] **Logical Execution:** Implement && (AND) and || (OR).
+- [x] **Logical Execution:** Implement `&&` (AND) and `||` (OR).
+
+- [x] **Expansion Engine - Part I:**
+    - [x] *Quote Handling:* A very basic single `'` and double `"` quotes
+    parser.
 
 - [ ] **Job Control:** Support for backgrounding processes with &.
 
@@ -27,11 +31,7 @@ POSIX-compliant redirection and pipelining.
 set variables using the bash syntax. This requires `unset` and export to be
 written as well.
 
-- [ ] **Expansion Engine - Part I:**
-    - [ ] *Quote Handling:* A very basic single `'` and double `"` quotes
-    parser.
-
-- [ ] **Built-ins:**
+- [ ] **Builtins:**
     - [ ] `echo`: With -n and -e flag support.
     - [ ] `export`: To set environment variables.
     - [ ] `unset`: To remove variables.
@@ -39,7 +39,6 @@ written as well.
     - [ ] `jobs`: List active background tasks.
     - [ ] `fg` / `bg`: Move jobs between foreground and background.
     - [ ] `kill`: Send signals to processes by PID or Job ID.
-    - [ ] `history`: Integrated with ~/.jayshell_history for persistence.
 
 ## 📜 v5.0 - *Lovelace*
 
@@ -47,10 +46,30 @@ written as well.
 
 - [ ] **Shebang Support:** Allow execution of scripts starting with #!.
 
-- [ ] **Signal Handling:** Correctly handle SIGINT (Ctrl+C), SIGQUIT (Ctrl+),
-and SIGTSTP (Ctrl+Z).
+- [ ] **Signal Handling:** Correctly handle `SIGINT`, `SIGQUIT`, and `SIGTSTP`.
 
-- [ ] **Startup Files:** Load .jayshellrc and .jayshell_aliases on init.
+- [ ] **Shell-Specific Files:** Load at least .jayshellrc and .jayshell_aliases
+on init, write shell commands history to ~/.jayshell_history. We will comply
+with the XDG Base Directory Specification. So, the structure will be something
+like:
+```sh
+$ ls -la "${XDG_CONFIG_HOME}/jayshell" # or ~/.config/jayshell
+total ****
+drwxr-xr-x *** **** *** *** ** ***** .
+drwxr-xr-x *** **** *** *** ** ***** ..
+-rw-r--r-- *** **** *** *** ** ***** rc
+-rw-r--r-- *** **** *** *** ** ***** aliases
+-rw-r--r-- *** **** *** *** ** ***** profile *
+-rw-r--r-- *** **** *** *** ** ***** env     *
+-rw-r--r-- *** **** *** *** ** ***** logout  *
+$ ls -la "${XDG_STATE_HOME}/jayshell" # or ~/.local/state/jayshell
+total **
+drwxr-xr-x *** **** *** *** ** ***** .
+drwxr-xr-x *** **** *** *** ** ***** ..
+-rw------- *** **** *** *** ** ***** history
+```
+*: We may not implement these at all. I'd rather let the user decide on their
+names and source them from `jayshellrc`.
 
 - [ ] **Dynamic Prompt:**
     - [ ] *Git Integration:* Dynamic prompt with status indicators.
@@ -62,6 +81,7 @@ and SIGTSTP (Ctrl+Z).
     - [ ] `type`: Identify if a command is a built-in, alias, or file.
     - [ ] `read`: Take user input into a variable.
     - [ ] `wait`: Wait for background processes to complete.
+    - [ ] `history`: Integrated with ~/.jayshell_history for persistence.
 
 ## 🧬 v6.0 - *Backus*
 
@@ -166,9 +186,9 @@ logical paths and physical paths.
 
 *Focus:* I/O, Redirection, Environment
 
-- [x] **Redirection Engine:** Implement <, >, >>, and 2> (stderr).
+- [x] **Redirection Engine:** Implement `<`, `>`, `>>`.
 
-- [x] **The Pipe Operator:** Support for | to connect processes.
+- [x] **The Pipe Operator:** Support for `|` to connect processes.
 
 - [x] **Logical Path Tracking:** Ensure `cd` updates `PWD` with the user's input
 string, and `pwd` reads from `PWD` before falling back to `getcwd()`.

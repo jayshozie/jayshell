@@ -79,7 +79,8 @@ char **lexer(const char *line)
 			lin_idx++;
 		}
 		/* special characters */
-		else if (c == '|' || c == '>' || c == '<' || c == ';' || c == '&') {
+		else if (c == '|' || c == '>' || c == '<' || c == ';' || c == '&' ||
+				 c == '\'' || c == '"') {
 			/* TODO
 			 * There has to be a better way to check whether c is a special
 			 * character. Not sure how this can be generalized and taken out of
@@ -115,11 +116,55 @@ char **lexer(const char *line)
 				strlcpy(tokens[tok_idx], "&&", 3 * sizeof(char));
 				tok_idx++;
 				lin_idx += 2;
-			} else if (c == '|' && line[lin_idx + 1] == '|' ) {
+			} else if (c == '|' && line[lin_idx + 1] == '|') {
 				tokens[tok_idx] = malloc(sizeof("||"));
 				strlcpy(tokens[tok_idx], "||", 3 * sizeof(char));
 				tok_idx++;
 				lin_idx += 2;
+			} else if (c == '\'') {
+				uint64_t tracker = lin_idx;
+				bool illegal_string = false;
+
+				/* find the next ['] char */
+				while (line[++tracker] != '\'' && line[tracker] != '\0');
+				if (line[tracker] == '\0')
+					illegal_string = true;
+
+				uint64_t str_len = tracker - lin_idx - 1; /* end quote */
+				tracker = lin_idx + 1;
+				tokens[tok_idx] = malloc((str_len + 1) * sizeof(char));
+
+				uint64_t i = 0;
+				while (i < str_len)
+					tokens[tok_idx][i++] = line[tracker++];
+				tokens[tok_idx++][i] = '\0';
+
+				if (illegal_string)
+					lin_idx += str_len + 1; /* only the starting quote */
+				else
+					lin_idx += str_len + 2; /* start and end quotes */
+			} else if (c == '"') {
+				uint64_t tracker = lin_idx;
+				bool illegal_string = false;
+
+				/* find the next ["] char */
+				while (line[++tracker] != '"' && line[tracker] != '\0');
+				if (line[tracker] == '\0')
+					illegal_string = true;
+
+				uint64_t str_len = tracker - lin_idx - 1; /* end quote */
+				tracker = lin_idx + 1;
+				tokens[tok_idx] = malloc((str_len + 1) * sizeof(char));
+
+				uint64_t i = 0;
+				while (i < str_len)
+					tokens[tok_idx][i++] = line[tracker++];
+				tokens[tok_idx++][i] = '\0';
+
+				if (illegal_string)
+					lin_idx += str_len + 1; /* only the starting quote */
+				else
+					lin_idx += str_len + 2; /* start and end quotes */
 			} else {
 				/* output > and input < redirection path */
 				tokens[tok_idx] = malloc(2);

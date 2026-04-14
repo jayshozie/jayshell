@@ -17,12 +17,19 @@ POSIX-compliant redirection and pipelining.
 
 *Focus:* Stability, Signal Handling, Job Control
 
+- [x] Switch to `<stdint.h>` integer definitions.
+
 - [x] **Logical Execution:** Implement && (AND) and || (OR).
 
-- [ ] **Signal Handling:** Correctly handle SIGINT (Ctrl+C), SIGQUIT (Ctrl+),
-and SIGTSTP (Ctrl+Z).
+- [ ] **Job Control:** Support for backgrounding processes with &.
 
-- [ ] **Job Control:** Support for backgrounding with &.
+- [ ] **Variables and Simple Variable Expansion:** Add the ability for users to
+set variables using the bash syntax. This requires `unset` and export to be
+written as well.
+
+- [ ] **Expansion Engine - Part I:**
+    - [ ] *Quote Handling:* A very basic single `'` and double `"` quotes
+    parser.
 
 - [ ] **Built-ins:**
     - [ ] `echo`: With -n and -e flag support.
@@ -39,6 +46,9 @@ and SIGTSTP (Ctrl+Z).
 *Focus:* Customization, Script Execution, Alias Logic
 
 - [ ] **Shebang Support:** Allow execution of scripts starting with #!.
+
+- [ ] **Signal Handling:** Correctly handle SIGINT (Ctrl+C), SIGQUIT (Ctrl+),
+and SIGTSTP (Ctrl+Z).
 
 - [ ] **Startup Files:** Load .jayshellrc and .jayshell_aliases on init.
 
@@ -59,8 +69,8 @@ and SIGTSTP (Ctrl+Z).
 
 - [ ] **The Lexer/Parser Rewrite:** Move away from `strtok` to a formal grammar.
 
-- [ ] **Expansion Engine:**
-    - [ ] *Quote Handling:* Single `'` and double `"` quotes.
+- [ ] **Expansion Engine - Part II:**
+    - [ ] *Quote Handling:* Fully implemented `'` and double `"` quotes parser.
     - [ ] *Escape Characters:* Support for `\`.
     - [ ] *Command Substitution:* `$(command)`.
     - [ ] *Globbing:* Wildcard expansion `*` and `?`.

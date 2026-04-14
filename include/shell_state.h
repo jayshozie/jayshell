@@ -30,6 +30,6 @@ extern bool is_valid_oldpwd;
 void init_shell_state(void);
 
 /* Helper to update state safely */
-int update_cwd(void);
+int32_t update_cwd(void);
 
 #endif /* _SHELL_STATE_H_ */

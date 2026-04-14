@@ -27,9 +27,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
  */
 char **expand_tilde(char **args)
 {
-	int i = 0;
+	uint8_t i = 0;
 	char *remainder;
-	int dirsize;
+	uint16_t dirsize;
 	char *home = getenv("HOME");
 	while (args[i]) {
 		if (args[i][0] == '~' && home) {
@@ -52,9 +52,9 @@ char **lexer(const char *line)
 	char **tokens = malloc(ARGS_SIZE * sizeof(char *));
 	char buf[1024];
 	char c;
-	unsigned long buf_idx = 0;
-	unsigned long tok_idx = 0;
-	unsigned long lin_idx = 0;
+	uint64_t buf_idx = 0;
+	uint64_t tok_idx = 0;
+	uint64_t lin_idx = 0;
 
 	while (line[lin_idx] != '\0') {
 		c = line[lin_idx];
@@ -197,8 +197,8 @@ CMD *parser(char **tokens)
 	CMD *head = malloc(sizeof(CMD));
 	CMD *curr = NULL;
 	CMD *next = NULL;
-	int arg_idx = 0;
-	int i = 0;
+	uint64_t arg_idx = 0;
+	uint64_t i = 0;
 	char c;
 
 	init_cmd(head);
@@ -275,7 +275,7 @@ CMD *parser(char **tokens)
  */
 void free_cmds(CMD *head)
 {
-	int i;
+	uint64_t i;
 	CMD *curr = head;
 	CMD *next = NULL;
 

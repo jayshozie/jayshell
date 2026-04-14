@@ -23,6 +23,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 /*
  * Sets the pipes and forks, then calls the appropriate functions.
  */
-extern int exec_cmds(CMD *head);
+extern int32_t exec_cmds(CMD *head);
 
 #endif /* _EXECUTE_H_ */

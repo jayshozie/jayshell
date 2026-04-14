@@ -31,7 +31,7 @@ bool is_valid_oldpwd;
 /* Initialization function */
 void init_shell_state(void)
 {
-	int status = 0;
+	int32_t status = 0;
 	is_valid_oldpwd = false;
 
 	if ((usr_home = getenv("HOME")) == NULL)
@@ -55,9 +55,9 @@ void init_shell_state(void)
 
 /* Helper to update state safely */
 /* Run after chdir */
-int update_cwd(void)
+int32_t update_cwd(void)
 {
-	int status = 0;
+	int32_t status = 0;
 	strlcpy(shell_oldpwd, shell_cwd, PATH_MAX_SIZE);
 	if (getcwd(shell_cwd, PATH_MAX_SIZE) == NULL) {
 		status = errno;

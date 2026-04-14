@@ -24,10 +24,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <execute.h>
 #include <builtins.h>
 
-static inline int plumber(CMD *curr, int fd_in, int fd_out)
+static inline int32_t plumber(CMD *curr, int fd_in, int fd_out)
 {
-	int status = 0;
-	int flags = 0;
+	int32_t status = 0;
+	uint32_t flags = 0;
 
 	/* pipe checks */
 	if (fd_in != STDIN_FILENO) {
@@ -75,16 +75,16 @@ static inline int plumber(CMD *curr, int fd_in, int fd_out)
 	return status;
 }
 
-static inline int __worker_builtin(builtin_func func, CMD *curr, int fd_in,
+static inline int32_t __worker_builtin(builtin_func func, CMD *curr, int fd_in,
 								   int fd_out)
 {
-	int status = 0;
-	int saved_stdout;
-	int saved_stdin;
+	int32_t status = 0;
+	int32_t saved_stdout;
+	int32_t saved_stdin;
 
 	/* save stdin and stdout */
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
+	saved_stdin = (int32_t)dup(STDIN_FILENO);
+	saved_stdout = (int32_t)dup(STDOUT_FILENO);
 
 	if ((status = plumber(curr, fd_in, fd_out)) == 0)
 		status = func(curr);
@@ -103,7 +103,7 @@ static inline int __worker_builtin(builtin_func func, CMD *curr, int fd_in,
 
 static inline pid_t __worker_extern(CMD *curr, int fd_in, int fd_out)
 {
-	int status = 0;
+	int32_t status = 0;
 	pid_t pid = fork();
 	if (pid == 0) {
 		if ((status = plumber(curr, fd_in, fd_out)) != 0)
@@ -136,14 +136,15 @@ static inline bool should_skip(CMD *prev, int prev_exit_status)
 	}
 }
 
-int exec_cmds(CMD *head)
+int32_t exec_cmds(CMD *head)
 {
 	builtin_func builtin;
 	pid_t *pids = NULL;
-	int cmd_count = 0, fork_count = 0, exit_status = 0;
-	int fd_in = STDIN_FILENO;
-	int next_fd_in = STDIN_FILENO;
-	int fd_out = STDOUT_FILENO;
+	uint32_t cmd_count = 0;
+    int32_t exit_status = 0, fork_count = 0;
+	int32_t fd_in = STDIN_FILENO;
+	int32_t next_fd_in = STDIN_FILENO;
+	int32_t fd_out = STDOUT_FILENO;
 	CMD *curr = head, *prev = NULL;
 
 	/* get the number of nodes in the linked list */
@@ -169,7 +170,7 @@ int exec_cmds(CMD *head)
 			break;
 		}
 		if (curr->type == OP_PIPE) {
-			int pipedes[2];
+			int32_t pipedes[2];
 			if (pipe(pipedes) != 0) {
 				exit_status = errno;
 				(void)fprintf(stderr,
@@ -189,7 +190,7 @@ int exec_cmds(CMD *head)
 			if (!prev || prev->type != OP_PIPE) {
 				exit_status = __worker_builtin(builtin, curr, fd_in, fd_out);
 			} else {
-				int status = 0;
+				int32_t status = 0;
 				pid_t pid = fork();
 				if (pid == 0) {
 					status = plumber(curr, fd_in, fd_out);
@@ -205,8 +206,8 @@ int exec_cmds(CMD *head)
 		}
 
 		if (curr->type != OP_PIPE) {
-			int tmp = 0;
-			for (int i = 0; i < fork_count; i++) {
+			int32_t tmp = 0;
+			for (int32_t i = 0; i < fork_count; i++) {
 				waitpid(pids[i], &tmp, 0);
 				if (WIFEXITED(tmp)) {
 					curr->exit_status = WEXITSTATUS(tmp);

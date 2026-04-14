@@ -27,7 +27,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <stdio.h>
 #include <readline/readline.h>
 
-int status = 0;
+int32_t status = 0;
 char *command;
 char **tokens; /* DYNAMICALLY ALLOCATED BY THE TOKENIZER */
 

@@ -20,11 +20,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <stdint.h>
 
 #ifndef PATH_MAX_SIZE
-#define PATH_MAX_SIZE 4096
+#define PATH_MAX_SIZE UINT16_MAX
 #endif
 
 #ifndef ARGS_SIZE
-#define ARGS_SIZE 255
+#define ARGS_SIZE UINT8_MAX
 #endif
 
 #ifndef SPEC_PIDS
@@ -51,9 +51,9 @@ struct CMD {
 
 	char *file_in;	 /* < file.txt */
 	char *file_out;	 /* > file.txt */
-	int append_mode; /* true if '>>', false if '>' */
+	bool append_mode; /* true if '>>', false if '>' */
 	CON type;		 /* how is this CMD connected to the next */
-	int exit_status; /* needed for AND and OR separated lists */
+	int32_t exit_status; /* needed for AND and OR separated lists */
 
 	CMD *next; /* next command in the list */
 };

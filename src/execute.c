@@ -14,8 +14,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include "execute.h"
-#include "builtins.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
@@ -23,6 +21,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <execute.h>
+#include <builtins.h>
 
 static inline int plumber(CMD *curr, int fd_in, int fd_out)
 {

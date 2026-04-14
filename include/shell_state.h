@@ -17,8 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #ifndef _SHELL_STATE_H_
 #define _SHELL_STATE_H_
 
-#include "shell_defs.h"
 #include <stdbool.h>
+#include <shell_defs.h>
 
 /* GLOBAL VARIABLES */
 extern char shell_cwd[PATH_MAX_SIZE];

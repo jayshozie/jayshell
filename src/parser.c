@@ -14,12 +14,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include "parser.h"
-#include "shell_defs.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <parser.h>
+#include <shell_defs.h>
 
 /*
  * Gets the entire args of a command, expands the tilde (~), if and only if it's

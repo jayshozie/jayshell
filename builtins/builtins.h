@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #ifndef _BUILTINS_H_
 #define _BUILTINS_H_
 
-#include "shell_defs.h"
+#include <shell_defs.h>
 
 typedef int (*builtin_func)(CMD *cmd);
 

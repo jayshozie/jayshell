@@ -14,13 +14,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include "shell_state.h"
-#include "shell_defs.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <shell_state.h>
+#include <shell_defs.h>
 
 /* GLOBAL VARIABLES */
 char shell_cwd[PATH_MAX_SIZE];

@@ -14,9 +14,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include "builtins.h"
-#include "shell_defs.h"
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <builtins.h>
+#include <shell_defs.h>
 
 /*
  * echo: echo [-neE] [arg ...]

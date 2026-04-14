@@ -14,18 +14,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
-#include "execute.h"
-#include "parser.h"
-#include "shell_defs.h"
-#include "shell_state.h"
-#include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
-
+#include <stdbool.h>
+#include <execute.h>
+#include <parser.h>
+#include <shell_defs.h>
+#include <shell_state.h>
 /*
  * Readline uses the type 'FILE', but doesn't include <stdio.h>, so we have to
  * move it at after that, although the ordering is messed up that way.
  */
+#include <stdio.h>
 #include <readline/readline.h>
 
 int status = 0;

@@ -16,6 +16,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 #ifndef _SHELL_DEFS_H_
 #define _SHELL_DEFS_H_
+#include <stdbool.h>
+#include <stdint.h>
 
 #ifndef PATH_MAX_SIZE
 #define PATH_MAX_SIZE 4096

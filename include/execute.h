@@ -17,9 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 #ifndef _EXECUTE_H_
 #define _EXECUTE_H_
 
-#include "builtins.h"
-#include "shell_defs.h"
 #include <sys/types.h>
+#include <shell_defs.h>
 
 /*
  * Sets the pipes and forks, then calls the appropriate functions.

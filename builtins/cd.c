@@ -56,8 +56,7 @@ int builtin_cd(CMD *cmd)
 			if (is_valid_oldpwd != true) {
 				/* defined in shell_state.h */
 				status = 1;
-				(void)fprintf(stderr,
-					      "[ERROR] OLD_PWD not set yet.\n");
+				(void)fprintf(stderr, "[ERROR] OLD_PWD not set yet.\n");
 			} else {
 				oldpwd = getenv("OLDPWD");
 				if (oldpwd != NULL) {
@@ -70,8 +69,7 @@ int builtin_cd(CMD *cmd)
 							"errno: %d\n",
 							status);
 					} else {
-						if ((status = update_cwd()) !=
-						    0) {
+						if ((status = update_cwd()) != 0) {
 							(void)fprintf(
 								stderr,
 								"[ERROR] update_cwd had an error. errno: %d\n",
@@ -85,15 +83,13 @@ int builtin_cd(CMD *cmd)
 			dirname = args[1];
 			if (chdir(dirname) != 0) {
 				status = errno;
-				(void)fprintf(
-					stderr,
-					"[ERROR] Couldn't change directory. errno: %d\n",
-					status);
+				(void)fprintf(stderr,
+							  "[ERROR] Couldn't change directory. errno: %d\n",
+							  status);
 			} else {
 				if ((status = update_cwd()) != 0) {
 					(void)fprintf(
-						stderr,
-						"[ERROR] update_cwd had an error. errno: %d\n",
+						stderr, "[ERROR] update_cwd had an error. errno: %d\n",
 						status);
 				}
 			}

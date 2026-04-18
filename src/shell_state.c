@@ -44,12 +44,13 @@ void init_shell_state(void)
 
 	if (setenv("PWD", shell_cwd, 1) != 0) {
 		status = errno;
-		(void)fprintf(stderr,
+		(void)fprintf(
+			stderr,
 			"[ERROR] Couldn't set environment variable 'PWD'. errno: %d",
 			status);
 	}
 
-	unsetenv("OLDPWD"); /* explicitly unset OLDPWD on startup */
+	unsetenv("OLDPWD");		/* explicitly unset OLDPWD on startup */
 	shell_oldpwd[0] = '\0'; /* mark as empty/invalid */
 }
 
@@ -61,18 +62,19 @@ int32_t update_cwd(void)
 	strlcpy(shell_oldpwd, shell_cwd, PATH_MAX_SIZE);
 	if (getcwd(shell_cwd, PATH_MAX_SIZE) == NULL) {
 		status = errno;
-		(void)fprintf(stderr, "[ERROR] Couldn't get cwd. errno: %d\n",
-			status);
+		(void)fprintf(stderr, "[ERROR] Couldn't get cwd. errno: %d\n", status);
 	}
 	if (setenv("OLDPWD", shell_oldpwd, 1) != 0) {
 		status = errno;
-		(void)fprintf(stderr,
+		(void)fprintf(
+			stderr,
 			"[ERROR] Couldn't set environment variable 'OLDPWD'. errno: %d\n",
 			status);
 	}
 	if (setenv("PWD", shell_cwd, 1) != 0) {
 		status = errno;
-		(void)fprintf(stderr,
+		(void)fprintf(
+			stderr,
 			"[ERROR] Couldn't set environment variable 'PWD'. errno: %d\n",
 			status);
 	}

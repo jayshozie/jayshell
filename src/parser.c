@@ -126,7 +126,8 @@ char **lexer(const char *line)
 				bool illegal_string = false;
 
 				/* find the next ['] char */
-				while (line[++tracker] != '\'' && line[tracker] != '\0');
+				while (line[++tracker] != '\'' && line[tracker] != '\0')
+					;
 				if (line[tracker] == '\0')
 					illegal_string = true;
 
@@ -148,7 +149,8 @@ char **lexer(const char *line)
 				bool illegal_string = false;
 
 				/* find the next ["] char */
-				while (line[++tracker] != '"' && line[tracker] != '\0');
+				while (line[++tracker] != '"' && line[tracker] != '\0')
+					;
 				if (line[tracker] == '\0')
 					illegal_string = true;
 

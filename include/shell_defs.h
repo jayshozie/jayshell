@@ -49,10 +49,10 @@ typedef struct CMD CMD;
 struct CMD {
 	char **args; /* e.g. ['bat', '-H', '/home/test/project/main.c'] */
 
-	char *file_in;	 /* < file.txt */
-	char *file_out;	 /* > file.txt */
-	bool append_mode; /* true if '>>', false if '>' */
-	CON type;		 /* how is this CMD connected to the next */
+	char *file_in;		 /* < file.txt */
+	char *file_out;		 /* > file.txt */
+	bool append_mode;	 /* true if '>>', false if '>' */
+	CON type;			 /* how is this CMD connected to the next */
 	int32_t exit_status; /* needed for AND and OR separated lists */
 
 	CMD *next; /* next command in the list */

@@ -76,7 +76,7 @@ static inline int32_t plumber(CMD *curr, int fd_in, int fd_out)
 }
 
 static inline int32_t __worker_builtin(builtin_func func, CMD *curr, int fd_in,
-								   int fd_out)
+									   int fd_out)
 {
 	int32_t status = 0;
 	int32_t saved_stdout;
@@ -141,7 +141,7 @@ int32_t exec_cmds(CMD *head)
 	builtin_func builtin;
 	pid_t *pids = NULL;
 	uint32_t cmd_count = 0;
-    int32_t exit_status = 0, fork_count = 0;
+	int32_t exit_status = 0, fork_count = 0;
 	int32_t fd_in = STDIN_FILENO;
 	int32_t next_fd_in = STDIN_FILENO;
 	int32_t fd_out = STDOUT_FILENO;

@@ -43,6 +43,7 @@ int builtin_pwd(CMD *cmd)
 	int status = 0;
 	bool must_free = false;
 	char *cwd;
+	(void)cmd;
 	if ((cwd = getenv("PWD")) == NULL) {
 		status = errno;
 		(void)fprintf(

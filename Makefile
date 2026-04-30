@@ -1,3 +1,4 @@
+.DEFAULT_GOAL := release
 # TODO: will automate the compiler at some point too
 CC = gcc
 # needed compiler flags. will change this so that it works with clang too.
@@ -72,8 +73,8 @@ help:
 	@echo -e "$(Y)=====================================================================$(RS)"
 	@echo -e "$(Y)| $(M)$(BO)Usage:$(RS)                                                            $(Y)|$(RS)"
 	@echo -e "$(Y)|    $(C)$(BO)make run$(RS)            $(B)$(BO)Alias for release-run$(RS)                      $(Y)|$(RS)"
-	@echo -e "$(Y)|    $(C)$(BO)make release-run$(RS)    $(B)$(BO)Build jayshell for release and run it$(RS)      $(Y)|$(RS)"
-	@echo -e "$(Y)|    $(C)$(BO)make debug-run$(RS)      $(B)$(BO)Build jayshell for debug and run it$(RS)        $(Y)|$(RS)"
+	@echo -e "$(Y)|    $(C)$(BO)make run-release$(RS)    $(B)$(BO)Build jayshell for release and run it$(RS)      $(Y)|$(RS)"
+	@echo -e "$(Y)|    $(C)$(BO)make run-debug$(RS)      $(B)$(BO)Build jayshell for debug and run it$(RS)        $(Y)|$(RS)"
 	@echo -e "$(Y)|    $(C)$(BO)make release$(RS)        $(B)$(BO)Build jayshell for release$(RS)                 $(Y)|$(RS)"
 	@echo -e "$(Y)|    $(C)$(BO)make debug$(RS)          $(B)$(BO)Build jayshell with debugging information$(RS)  $(Y)|$(RS)"
 	@echo -e "$(Y)|    $(C)$(BO)make check$(RS)          $(B)$(BO)Check for syntax errors$(RS)                    $(Y)|$(RS)"

@@ -224,8 +224,9 @@ char **lexer(const char *line)
  */
 CMD *init_cmd(CMD *cmd)
 {
-	cmd->args = malloc(ARGS_SIZE * sizeof(char *));
-	cmd->args[0] = NULL;
+	cmd->argv = malloc(ARGS_SIZE * sizeof(char *));
+	cmd->argv[0] = NULL;
+	cmd->argc = 0;
 	cmd->file_in = NULL;
 	cmd->file_out = NULL;
 	cmd->append_mode = false;
@@ -244,7 +245,7 @@ CMD *parser(char **tokens)
 	CMD *head = malloc(sizeof(CMD));
 	CMD *curr = NULL;
 	CMD *next = NULL;
-	uint64_t arg_idx = 0;
+	uint64_t arg_idx = 0, argc = 1;
 	uint64_t i = 0;
 	char c;
 
@@ -259,7 +260,8 @@ CMD *parser(char **tokens)
 			next = malloc(sizeof(CMD));
 			init_cmd(next);
 			curr->next = next;
-			curr->args[arg_idx] = NULL; /* end the command */
+			curr->argc = argc;
+			curr->argv[arg_idx] = NULL; /* end the command */
 
 			if (c == '|') {
 				if (tokens[i][1] == '|')
@@ -271,6 +273,7 @@ CMD *parser(char **tokens)
 			}
 
 			i++;
+			argc = 1;
 			arg_idx = 0;
 			curr = curr->next;
 		}
@@ -293,22 +296,28 @@ CMD *parser(char **tokens)
 					"[ERROR] Parser failed at 'check for redirection'.\n");
 				exit(1);
 			}
+			curr->argc = argc;
+			argc = 1;
 		} else if (c == '&' && tokens[i][1] == '&') {
 			next = malloc(sizeof(CMD));
 			init_cmd(next);
 			curr->next = next;
-			curr->args[arg_idx] = NULL;
+			curr->argc = argc;
+			curr->argv[arg_idx] = NULL;
 			curr->type = OP_AND;
 
 			i++;
 			arg_idx = 0;
+			argc = 1;
 			curr = curr->next;
 		} else {
 			/* regular argument */
-			curr->args[arg_idx++] = strdup(tokens[i++]);
+			curr->argv[arg_idx++] = strdup(tokens[i++]);
+			argc++;
 		}
+		curr->argc = argc;
 	}
-	curr->args[arg_idx] = NULL;
+	curr->argv[arg_idx] = NULL;
 
 	i = 0;
 	while (tokens[i])
@@ -330,9 +339,9 @@ void free_cmds(CMD *head)
 		i = 0;
 		next = curr->next;
 
-		while (curr->args[i])
-			free(curr->args[i++]);
-		free(curr->args);
+		while (curr->argv[i])
+			free(curr->argv[i++]);
+		free(curr->argv);
 		free(curr->file_in);
 		free(curr->file_out);
 		free(curr);

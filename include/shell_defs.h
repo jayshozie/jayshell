@@ -47,7 +47,8 @@ typedef enum {
 
 typedef struct CMD CMD;
 struct CMD {
-	char **args; /* e.g. ['bat', '-H', '/home/test/project/main.c'] */
+	char **argv;   /* e.g. ['bat', '-H', '/home/test/project/main.c'] */
+	uint64_t argc; /* e.g. 3 */
 
 	char *file_in;		 /* < file.txt */
 	char *file_out;		 /* > file.txt */

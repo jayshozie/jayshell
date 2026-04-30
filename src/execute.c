@@ -109,12 +109,12 @@ static inline pid_t __worker_extern(CMD *curr, int fd_in, int fd_out)
 		if ((status = plumber(curr, fd_in, fd_out)) != 0)
 			exit(status);
 
-		if (execvp(curr->args[0], curr->args) == -1) {
+		if (execvp(curr->argv[0], curr->argv) == -1) {
 			status = errno;
 			if (status == ENOENT) {
 				(void)fprintf(stderr,
 							  "[ERROR] Command '%s' not found. errno: %d\n",
-							  curr->args[0], status);
+							  curr->argv[0], status);
 			}
 			exit(status);
 		}
@@ -166,7 +166,7 @@ int32_t exec_cmds(CMD *head)
 			curr = curr->next;
 			continue;
 		}
-		if (!curr->args[0]) {
+		if (!curr->argv[0]) {
 			break;
 		}
 		if (curr->type == OP_PIPE) {
@@ -185,7 +185,7 @@ int32_t exec_cmds(CMD *head)
 			next_fd_in = STDIN_FILENO;
 		}
 
-		builtin = get_builtin(curr->args[0]);
+		builtin = get_builtin(curr->argv[0]);
 		if (builtin) {
 			if (!prev || prev->type != OP_PIPE) {
 				exit_status = __worker_builtin(builtin, curr, fd_in, fd_out);

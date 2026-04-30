@@ -22,9 +22,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 int builtin_exit(CMD *cmd)
 {
-	char **args = cmd->args;
+	char **argv = cmd->argv;
 	unsigned long exit_val = 0;
-	if (args[1])
-		exit_val = strtoul(args[1], NULL, 0);
+	if (argv[1])
+		exit_val = strtoul(argv[1], NULL, 0);
 	exit(exit_val);
 }

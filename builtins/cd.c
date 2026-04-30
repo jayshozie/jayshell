@@ -25,14 +25,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.*/
 
 int builtin_cd(CMD *cmd)
 {
-	char **args = cmd->args;
+	char **argv = cmd->argv;
 	int status = 0;
 	char *dirname, *home, *oldpwd;
 
-	if (args[1] != NULL && args[2] != NULL) {
+	if (argv[1] != NULL && argv[2] != NULL) {
 		(void)fprintf(stderr, "[ERROR] Too many arguments.\n");
 	} else {
-		if (args[1] == NULL || args[1][0] == '\0') {
+		if (argv[1] == NULL || argv[1][0] == '\0') {
 			/* empty args[1] implemented, POSIX compliance */
 			home = getenv("HOME");
 			if (home != NULL) {
@@ -52,7 +52,7 @@ int builtin_cd(CMD *cmd)
 					}
 				}
 			}
-		} else if (strcmp(args[1], "-") == 0) {
+		} else if (strcmp(argv[1], "-") == 0) {
 			if (is_valid_oldpwd != true) {
 				/* defined in shell_state.h */
 				status = 1;
@@ -80,7 +80,7 @@ int builtin_cd(CMD *cmd)
 				}
 			}
 		} else {
-			dirname = args[1];
+			dirname = argv[1];
 			if (chdir(dirname) != 0) {
 				status = errno;
 				(void)fprintf(stderr,
